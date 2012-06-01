@@ -1,0 +1,1 @@
+Thank you, your verification email has been resent to <?=$this->session->userdata('email')?>

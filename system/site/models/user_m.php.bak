@@ -1,0 +1,411 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+class User_m extends CI_Model
+{
+	function __construct()
+	{
+		parent::__construct();
+		$this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
+	}
+	
+	public function exists($user)
+	{
+		$user = xss_clean($user);
+		
+		if(!$this->cache->get("mn_user_exists_".$user))
+		{
+			if(is_numeric($user))
+			{
+				if($this->db->get_where('users', array('id' => $user))->num_rows())
+				{
+					$this->cache->save("mn_user_exists_".$user, TRUE, 86400);
+					return TRUE;
+				}
+				else
+				{
+					return FALSE;
+				}
+			}
+			else
+			{
+				if($this->db->get_where('users', array('username' => $user))->num_rows())
+				{
+					$this->cache->save("mn_user_exists_".$user, TRUE, 86400);
+					return TRUE;
+				}
+				else
+				{
+					return FALSE;
+				}
+			}
+		}
+		else
+		{
+			return TRUE;
+		}
+	}
+	
+	public function meta($meta_key, $user_id = NULL)
+	{
+		if($user_id === NULL)
+		{
+			$user_id = $this->session->userdata('user_id');
+		}
+		
+		$meta_key = xss_clean($meta_key);
+		
+		if(!$data = $this->cache->get("mn_user_meta_".$user_id."_".$meta_key)) // Check the data is not already cached
+		{
+			$query = $this->db->get_where('users_meta', array('user_id' => $user_id, 'key' => $meta_key));
+			
+			if(!$query->num_rows() OR $query->row()->value == NULL)
+			{
+				return FALSE;
+			}
+			else
+			{
+				$data = $query->row()->value;
+			}
+			
+			$this->cache->save("mn_user_meta_".$user_id."_".$meta_key, $data, 86400); // We're done, save this to the cache for a day
+		}
+		
+		return $data;
+	}
+	
+	public function add_meta($meta_key, $meta_value, $user_id = NULL)
+	{
+		if($user_id === NULL)
+		{
+			$user_id = $this->session->userdata("user_id");
+		}
+		
+		if($this->exists($user_id))
+		{
+			$insert_array = array("user_id" => $user_id, "key" => $meta_key, "value" => $meta_value);
+			$update_array = array("value" => $meta_value);
+	
+			$query = $this->db->where("key", $meta_key);
+			$query = $this->db->get_where('users_meta', array('user_id' => $user_id));
+					
+			if(!$query->num_rows())
+			{
+				$this->db->insert("users_meta", $insert_array);
+			}
+			else
+			{
+				$this->db->where("user_id", $user_id);
+				$this->db->where("key", $meta_key);
+				$this->db->update("users_meta", $update_array);
+			}
+			
+			$this->cache->delete("mn_user_meta_".$user_id."_".$meta_key); // Delete the cached file (if any)
+			
+			return TRUE;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+	
+	public function add_us_mobile($number, $user_id = NULL)
+	{
+		if($user_id === NULL)
+		{
+			$user_id = $this->session->userdata('user_id');
+		}
+		
+		$this->db->trans_start();
+		$this->user_m->add_meta('mobile_number', $number);
+		$this->user_m->add_meta('mobile_country', 'US');
+		$this->db->trans_complete();
+		
+		if ($this->db->trans_status() !== FALSE)
+		{
+			return TRUE;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+	
+	public function add_uk_mobile($number, $user_id = NULL)
+	{
+		if($user_id === NULL)
+		{
+			$user_id = $this->session->userdata('user_id');
+			$username = $this->session->userdata('username');
+		}
+		else
+		{
+			$username = $this->db->get_where('user', array('id' => $user_id))->row()->username;
+		}
+		
+		
+		$verification_code = generate_password(rand(5, 8)); // Generate verification code, min 5, max 8
+		
+		$this->db->trans_start();
+		$this->user_m->add_meta('mobile_number', $number);
+		$this->user_m->add_meta('mobile_verification_code', $verification_code);
+		$this->user_m->add_meta('mobile_country', 'UK');
+		$this->db->trans_complete();
+		
+		if ($this->db->trans_status() !== FALSE)
+		{
+			// The verification code was added and the number was added, text the user with this code.
+			
+			if($this->_can_send($user_id))
+			{
+				$this->load->library('textmarketer');
+				
+				$data['code'] = $verification_code;
+				$data['name'] = $username;
+				
+				$message = $this->load->view('texts/verify_mobile', $data, TRUE);
+				
+				$send = $this->textmarketer->send($number, $message);
+				
+				if($send)
+				{
+					$this->_log_sms($number, $message, $user_id);
+					return TRUE;
+				}
+				else
+				{
+					return FALSE;
+				}
+			}
+			else
+			{
+				return FALSE;
+			}
+		}
+	}
+
+	private function _log_sms($number, $message, $user_id = NULL)
+	{
+		if($user_id === NULL)
+		{
+			$user_id = $this->session->userdata('user_id');
+		}
+		
+		$insert = $this->db->insert('sms_sent', array('user_id' => $user_id, 'number' => $number, 'message' => $message));
+		
+		if($insert)
+		{
+			return TRUE;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+	
+	private function _can_send($user_id = NULL)
+	{
+		if($user_id === NULL)
+		{
+			$user_id = $this->session->userdata('user_id');
+		}
+		
+		$this->db->where('sent > DATE_SUB(NOW(), INTERVAL 1 HOUR)');
+		$sms = $this->db->get_where('sms_sent', array('user_id' => $user_id));
+		
+		if($sms->num_rows() < 10)
+		{
+			return TRUE;
+		}
+		else
+		{
+			return FALSE;
+		}
+		
+		
+	}
+	
+	public function verify_mobile($code, $user_id = NULL)
+	{
+		if($user_id === NULL)
+		{
+			$user_id = $this->session->userdata('user_id');
+		}
+		
+		if($this->meta('mobile_verification_code') == $code)
+		{
+			$add = $this->add_meta('mobile_verified', 1);
+			
+			if($add)
+			{
+				return TRUE;
+			}
+			else
+			{
+				return FALSE;
+			}
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+	
+	private function _send_email($type, $email, &$data)
+	{
+		$this->load->library('email');
+		$this->email->from($this->config->item('webmaster_email', 'tank_auth'), $this->config->item('website_name', 'tank_auth'));
+		$this->email->reply_to($this->config->item('webmaster_email', 'tank_auth'), $this->config->item('website_name', 'tank_auth'));
+		$this->email->to($email);
+		$this->email->subject(sprintf($this->lang->line('auth_subject_'.$type), $this->config->item('website_name', 'tank_auth')));
+		$this->email->message($this->load->view('emails/'.$type.'-html', $data, TRUE));
+		$this->email->set_alt_message($this->load->view('emails/'.$type.'-txt', $data, TRUE));
+		if($this->email->send())
+		{
+			return TRUE;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+	
+	public function get_notifications($unread_only = FALSE, $mark_as_read = FALSE, $user_id = NULL)
+	{
+		if($user_id === NULL)
+		{
+			$user_id = $this->session->userdata('user_id');
+		}
+		
+		if($unread_only)
+		{
+			$this->db->where('read', 0);
+		}
+		
+		$this->db->select('notifications.id, notifications.notification, notifications.timestamp, notifications.read, notify.type, movies.id as movie_id, movies.title');
+		
+		$this->db->join('notify', 'notifications.notify_id = notify.id', 'left');
+		$this->db->join('movies', 'notify.movie_id = movies.id', 'left');
+		
+		$this->db->order_by('timestamp', 'asc');
+		$notifs = $this->db->get_where('notifications', array('notifications.user_id' => $user_id));
+		
+		$return = array();
+		
+		foreach($notifs->result() as $notif)
+		{
+			array_push($return, array('id' => $notif->id, 
+									  'notification' => $notif->notification, 
+									  'type' => $notif->type, 
+									  'movie_id' => $notif->movie_id, 
+									  'title' => $notif->title, 
+									  'read' => ($notif->read == 1) ? TRUE : FALSE, 
+									  'timestamp' => strtotime($notif->timestamp)
+									  )
+					  );
+			
+			if($mark_as_read)
+			{
+				$this->db->update('notifications', array('read' => 1), array('id' => $notif->id));
+			}
+		}
+		
+		return $return;
+	}
+
+	public function get_scheduled_notifications()
+	{
+		
+	}
+	
+	// Has the user setup a notification for the specified movie and type
+	function notif_for($movie_id, $type = 'theaters')
+	{
+		if($type !== 'theaters')
+		{
+			$type = 'dvd';
+		}
+		
+		$this->load->model('movie_m');
+		
+		if ($this->movie_m->exists($movie_id))
+		{
+			$notify = $this->db->get_where('notify', array('movie_id' => $movie_id, 
+														   'user_id'  => $this->session->userdata('user_id'),
+														   'type'	  => $type
+														   )
+										  );
+			
+			if($notify->num_rows())
+			{
+				return TRUE;
+			}
+			else
+			{
+				return FALSE;
+			}
+			
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+	
+	// Add notification for the user
+	function add_notify($id, $type = 'theaters')
+	{
+		$id = (int)$id;
+		
+		if($type != 'theaters')
+		{
+			$type = 'dvd';
+		}
+		
+		$insert = $this->db->insert("notify", array('user_id' => $this->session->userdata('user_id'), 'movie_id' => $id, 'type' => $type));
+		
+		if($insert)
+		{
+			return TRUE;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+	
+	// Remove notification for the user
+	function remove_notify($id, $type = 'theaters')
+	{
+		$id = (int)$id;
+		
+		if($type != 'theaters')
+		{
+			$type = 'dvd';
+		}
+		
+		$delete = $this->db->delete("notify", array('user_id' => $this->session->userdata('user_id'), 'movie_id' => $id, 'type' => $type));
+		
+		if($delete)
+		{
+			return TRUE;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+
+	public function get_user_email($user_id = NULL)
+	{
+		if($user_id === NULL)
+		{
+			$user_id = $this->session->userdata('user_id');
+		}
+		
+		$query = $this->db->get_where('users', array('id' => $user_id));
+		
+		return $query->row()->email;
+	}
+
+}
