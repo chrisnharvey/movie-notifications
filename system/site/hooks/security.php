@@ -7,10 +7,11 @@ function security(){
 	
 		$user = $CI->db->get_where("users", array("id" => $CI->session->userdata("user_id")));
 		
-		if ($user->row()->email != $CI->session->userdata("email") || $user->row()->password != $CI->session->userdata("password") || $user->row()->verified != $CI->session->userdata('verified'))
+		if ($user->row()->email != $CI->session->userdata("email") || $user->row()->password != $CI->session->userdata("password") || $user->row()->country != $CI->session->userdata('country') || $user->row()->verified != $CI->session->userdata('verified'))
 		{
 			$CI->session->set_userdata('email', $user->row()->email);
 			$CI->session->set_userdata('password', $user->row()->password);
+			$CI->session->set_userdata('country', $user->row()->country);
 			$CI->session->set_userdata('verified', $user->row()->verified);
 			
 			//redirect(current_url()); // Refresh the page, the users details have changed

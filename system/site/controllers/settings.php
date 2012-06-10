@@ -29,7 +29,7 @@ class Settings extends Restricted {
 		
 		if ($this->form_validation->run() === TRUE)
 		{
-			$update = $this->user_m->update_settings($this->input->post('email'), $this->input->post('timezones'));
+			$update = $this->user_m->update_settings($this->input->post('email'), $this->input->post('country'), $this->input->post('timezones'));
 			
 			if($update)
 			{

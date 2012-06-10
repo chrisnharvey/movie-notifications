@@ -444,7 +444,7 @@ class User_m extends CI_Model
 		}
 	}
 	
-	public function update_settings($email, $timezone, $user_id = NULL)
+	public function update_settings($email, $country, $timezone, $user_id = NULL)
 	{
 		if($user_id === NULL)
 		{
@@ -453,7 +453,7 @@ class User_m extends CI_Model
 		
 		$this->db->trans_start();
 		
-		$this->db->update('users', array('email' => $email, 'verified' => '0'), array('id' => $user_id));
+		$this->db->update('users', array('email' => $email, 'country' => $country, 'verified' => ($this->session->userdata('email') == $email ? $this->session->userdata('verified') : 0)), array('id' => $user_id));
 		$this->add_meta('timezone', $timezone);
 		
 		$this->db->trans_complete();

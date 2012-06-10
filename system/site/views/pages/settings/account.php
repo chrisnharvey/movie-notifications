@@ -34,7 +34,7 @@
 												<fieldset>
 									            	<label>Email: <input name="email" type="text" class="text" value="<?=set_value('email', $this->session->userdata('email'))?>"></label>
 									            	<?=form_error('email')?>
-									            	<label>Country: <?=country_menu(($country = $this->session->userdata('country')) ? $country : 226)?></label>
+									            	<label>Country: <?=country_menu(set_value('country', $this->session->userdata('country')))?></label>
 									            	<?=form_error('country')?>
 									            	<label>Timezone: <?=timezone_menu(($timezone = $this->user_m->meta('timezone')) ? $timezone : 'UTC')?></label>
 									            	<?=form_error('timezones')?>
