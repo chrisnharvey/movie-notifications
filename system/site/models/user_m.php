@@ -97,8 +97,8 @@ class User_m extends CI_Model
 		$query = $this->db->get('users', 1);
 		if($query->num_rows())
 		{
-			$this->load->library('hash');
-			if (Hash::CheckPassword($password, $query->row()->password) == TRUE)
+			$this->load->library('phpass');
+			if ($this->phpass->CheckPassword($password, $query->row()->password) == TRUE)
 			{
 				if($query->row()->deactivated == 1)
 				{
@@ -111,7 +111,7 @@ class User_m extends CI_Model
 				else
 				{
 					$this->db->delete('login_attempts', array('ip_address' => $this->input->ip_address()));
-					$data = array("user_id" => $query->row()->id, "username" => $query->row()->username, "email" => $query->row()->email, "verified" => $query->row()->verified, "logged_in" => TRUE);
+					$data = array("user_id" => $query->row()->id, "username" => $query->row()->username, "email" => $query->row()->email, "country" => $query->row()->country, "verified" => $query->row()->verified, "logged_in" => TRUE);
 					$this->session->set_userdata($data);
 					return TRUE;
 				}
@@ -135,6 +135,18 @@ class User_m extends CI_Model
 		}
 	}
 	
+	public function valid_country($country_id)
+	{
+		$query = $this->db->get_where('countries', array('enabled' => 1, 'country_id' => $country_id));
+		
+		if($query->num_rows())
+		{
+			return TRUE;
+		}
+		
+		return FALSE;
+	}
+	
 	public function valid_password($password, $user_id = NULL)
 	{
 		if($user_id === NULL)
@@ -146,8 +158,8 @@ class User_m extends CI_Model
 		
 		if($query->num_rows())
 		{
-			$this->load->library('hash');
-			if (Hash::CheckPassword($password, $query->row()->password) == TRUE)
+			$this->load->library('phpass');
+			if ($this->phpass->CheckPassword($password, $query->row()->password) == TRUE)
 			{
 				return TRUE;
 			}
@@ -417,8 +429,8 @@ class User_m extends CI_Model
 			$user_id = $this->session->userdata('user_id');
 		}
 		
-		$this->load->library('Hash');
-		$hashed = Hash::HashPassword($new_password);
+		$this->load->library('phpass');
+		$hashed = $this->phpass->HashPassword($new_password);
 		
 		$update = $this->db->update('users', array('password' => $hashed), array('id' => $user_id));
 		

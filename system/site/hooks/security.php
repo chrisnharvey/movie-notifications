@@ -18,9 +18,21 @@ function security(){
 		
 	}
 	
+	if (!$CI->input->cookie('country'))
+	{
+		if ($CI->input->get('country') == 'UK')
+		{
+			$CI->input->set_cookie('country', 'UK', 0, ".".$CI->config->item('site_domain'));
+		}
+		elseif($CI->input->server('HTTP_CF_IPCOUNTRY') != 'US' || $CI->input->server('HTTP_CF_IPCOUNTRY') != 'XX')
+		{
+			$CI->input->set_cookie('country', $CI->input->server('HTTP_CF_IPCOUNTRY'), 0, ".".$CI->config->item('site_domain'));
+		}
+	}
+	
 	if (!$CI->input->cookie("full_site"))
 	{
-		if($CI->input->get("full"))
+		if(isset($_GET['full']))
 		{
 			$CI->input->set_cookie("full_site", TRUE, 0, ".".$CI->config->item("site_domain"));
 		}

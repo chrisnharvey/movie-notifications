@@ -23,6 +23,7 @@ class Settings extends Restricted {
 		$this->load->helper('date');
 		
 		$this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+		$this->form_validation->set_rules('country', 'Country', 'required|callback__valid_country');
 		$this->form_validation->set_rules('timezones', 'Timezone', 'required|callback__valid_timezone');
 		$this->form_validation->set_rules('password', 'Password', 'required|callback__valid_password');
 		
@@ -41,6 +42,19 @@ class Settings extends Restricted {
 		}
 		
 		$this->page->show('settings/account', $data);
+	}
+	
+	public function _valid_country($value)
+	{
+		if($this->user_m->valid_country($value))
+		{
+			return TRUE;
+		}
+		else
+		{
+			$this->form_validation->set_message('_valid_country', 'The country you selected is not valid');
+			return FALSE;
+		}
 	}
 	
 	public function _valid_password($value)
@@ -141,8 +155,8 @@ class Settings extends Restricted {
 	public function _password_check($value) // This method is not available in the uri
 	{
 		// Do your thang!
-		$this->load->library("Hash");
-		if (Hash::CheckPassword($value, $this->session->userdata('password')) == TRUE)
+		$this->load->library("phpass");
+		if ($this->phpass->CheckPassword($value, $this->session->userdata('password')) == TRUE)
 		{
 			return TRUE;
 		}

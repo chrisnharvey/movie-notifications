@@ -39,6 +39,7 @@
          														<li><?=$recaptcha_html?></li>
          														<?=form_error('recaptcha_response_field')?>
      														</div>
+     														<input type="hidden" name="preferred_site" value="<?=$this->input->cookie('country')?>">
          													<div class="button_container">
          														<button type="submit"><span><em><b>register</b></em></span></button>
          													</div>
