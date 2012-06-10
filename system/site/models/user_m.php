@@ -568,9 +568,10 @@ class User_m extends CI_Model
 		$id = (int)$id;
 		
 		if($type != 'theaters')
-		{
 			$type = 'dvd';
-		}
+		
+		if($type == 'dvd' AND $this->session->userdata('country') == 225)
+			return FALSE;
 		
 		$insert = $this->db->insert("notify", array('user_id' => $this->session->userdata('user_id'), 'movie_id' => $id, 'type' => $type));
 		
