@@ -459,7 +459,7 @@ class Movie_m extends CI_Model
 					{
 						$trailers = $this->tmdb->movie_trailers($data['tmdb_id']);
 
-						if(isset($trailers->youtube))
+						if(isset($trailers->youtube) AND !empty($trailers->youtube))
 						{
 							$data['youtube_id'] = $trailers->youtube[0]->source;
 							$this->add_meta($id, 'youtube_id', $data['youtube_id']);
@@ -537,13 +537,17 @@ class Movie_m extends CI_Model
 						$this->load->library("rt");
 						$rt_call = $this->rt->call("movie_alias", array("type" => "imdb", "id" => substr($data['imdb_id'], 2)));
 					
-						if(empty($theatrical->row()->date) && isset($rt_call->release_dates->theater))
+						if(empty($theatrical->row()->date))
 						{
+							if(isset($rt_call->release_dates->theater))
+							{
 								$this->db->insert("releases", array("movie_id" => $movie_id, "date" => $rt_call->release_dates->theater, "type" => "Theaters"));
 								$data['release_date'] = $rt_call->release_dates->theater;
+							}
 						}
 						else
 						{
+							print_r($theatrical);
 							$data['release_date'] = $theatrical->row()->date;
 						}
 					
@@ -892,7 +896,15 @@ class Movie_m extends CI_Model
 					}
 				}
 			}
-
+			else
+			{
+				$dvd = $this->db->get_where('releases', array('movie_id' => $id, 'type' => 'DVD'));
+				if($dvd->num_rows())
+				{
+					return FALSE;
+				}
+			}
+			
 			return TRUE;
 		}
 
