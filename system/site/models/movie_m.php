@@ -404,39 +404,21 @@ class Movie_m extends CI_Model
 						}
 					}
 				
-					if(empty($data['synopsis']))
+					if((isset($data['tmdb_id']) || isset($data['imdb_id']) AND !empty($tmdb->overview)))
 					{
-						if(isset($data['tmdb_id']) || isset($data['imdb_id']))
-						{
-							$data['synopsis'] = $tmdb->overview;
-							$this->add_meta($movie_id, "synopsis", $tmdb->overview);
-						}
-						else
-						{
-							$data['synopsis'] = NULL;
-						}
+						$data['synopsis'] = $tmdb->overview;
+						$this->add_meta($movie_id, "synopsis", $tmdb->overview);
 					}
 					else
 					{
-						if(isset($data['tmdb_id']) || isset($data['imdb_id']))
-						{
-							if($data['synopsis'] != @$tmdb->overview)
-							{
-								$this->add_meta($movie_id, "synopsis", @$tmdb->overview);
-								$data['synopsis'] = @$tmdb->overview;
-							}
-						}
-						else
-						{
-							$data['synopsis'] = NULL;
-						}
+						$data['synopsis'] = NULL;
 					}
 				
 					if(empty($data['tagline']))
 					{
-						if(isset($data['tmdb_id']) || isset($data['imdb_id']))
+						if((isset($data['tmdb_id']) || isset($data['imdb_id'])) AND !empty($tmdb->tagline))
 						{
-							$data['tagline'] = @$tmdb->tagline;
+							$data['tagline'] = $tmdb->tagline;
 						}
 						else
 						{
