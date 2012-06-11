@@ -529,7 +529,6 @@ class Movie_m extends CI_Model
 						}
 						else
 						{
-							print_r($theatrical);
 							$data['release_date'] = $theatrical->row()->date;
 						}
 					
