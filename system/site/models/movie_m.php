@@ -1058,60 +1058,6 @@ class Movie_m extends CI_Model
 		}
 	}
 	
-	public function can_notify($id, $type = 'theaters', $country = NULL)
-	{
-		if($type == 'theaters')
-		{
-			$type = 'Theaters';
-		}
-		else
-		{
-			$type = 'DVD';
-		}
-
-		if ($country === NULL)
-		{
-			$country = $this->session->userdata('country');
-		}
-		
-		$movie = $this->db->get_where('releases', array('movie_id' => $id, 'type' => $type, 'country_id' => $country));
-		
-		if(!$movie->num_rows())
-		{
-			if($type == 'DVD')
-			{
-				$theaters = $this->db->get_where('releases', array('movie_id' => $id, 'type' => 'Theaters'));
-				if($theaters->num_rows())
-				{
-					if(strtotime($theaters->row()->date) < strtotime('-2 years'))
-					{
-						return FALSE;
-					}
-				}
-			}
-			else
-			{
-				$dvd = $this->db->get_where('releases', array('movie_id' => $id, 'type' => 'DVD'));
-				if($dvd->num_rows())
-				{
-					return FALSE;
-				}
-			}
-			
-			return TRUE;
-		}
-
-		$date = strtotime($movie->row()->date);
-		$today = time();
-		
-		if($date < $today)
-		{
-			return FALSE;
-		}
-		
-		return TRUE;
-	}
-	
 	function search($query)
 	{
 		$this->load->library("rt");

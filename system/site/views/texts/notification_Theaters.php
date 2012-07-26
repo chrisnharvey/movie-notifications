@@ -1,1 +1,1 @@
-Hi <?=$name?>, the movie '<?=$title?>' opens in theaters <?=$when?> (<?=$date?>)
+Hi <?=$name?>, the movie <?=$title?> opens in theaters <?=$when?> (<?=date('jS M Y', strtotime($date))?>).

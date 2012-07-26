@@ -23,23 +23,27 @@
                                       <div class="right-bot-corner">
                                         <div class="left-bot-corner">
                                           <div class="inner">
-                                          	<? $i = 1; ?>
-                                          	<? foreach($notifs as $notif): ?>
-	                                          	<div class="wrapper">
-	                                          		<div class="col-1">
-		                                              	<img src="<?=$this->movie_m->poster($notif['movie_id'])?>" alt="" class="img-indent">
-		                                                <div class="extra-wrap">
-		                                                  <h5><a href="<?=site_url('movie/'.$notif['movie_id'])?>"><?=$notif['title']?></a></h5>
-		                                                  <p><?=$notif['notification']?></p>
-		                                                  <div class="wrapper"><a href="<?=site_url('movie/'.$notif['movie_id'])?>" class="link1"><em><b>more</b></em></a></div>
-		                                                </div>
-		                                                <div class="clear"></div>
-		                                              </div>
-		                                         </div>
-		                                         <? if($notif != end($notifs)): ?>
-		                                         	<div class="clear">&nbsp;</div>
-		                                         <? endif; ?>
-	                                         <? endforeach; ?>
+                                            <? if ( ! empty($notifs)): ?>
+                                              <? $i = 1; ?>
+                                            	<? foreach($notifs as $notif): ?>
+  	                                          	<div class="wrapper">
+  	                                          		<div class="col-1">
+  		                                              	<img src="<?=$this->movie_m->poster($notif['movie_id'])?>" alt="" class="img-indent">
+  		                                                <div class="extra-wrap">
+  		                                                  <h5><a href="<?=site_url('movie/'.$notif['movie_id'])?>"><?=$notif['title']?></a></h5>
+  		                                                  <p><?=$notif['notification']?></p>
+  		                                                  <div class="wrapper"><a href="<?=site_url('movie/'.$notif['movie_id'])?>" class="link1"><em><b>more</b></em></a></div>
+  		                                                </div>
+  		                                                <div class="clear"></div>
+  		                                              </div>
+  		                                         </div>
+  		                                         <? if($notif != end($notifs)): ?>
+  		                                         	<div class="clear">&nbsp;</div>
+  		                                         <? endif; ?>
+  	                                         <? endforeach; ?>
+                                            <? else: ?>
+                                             <p>You have no recent notifications, why not check out whats <a href="/theaters">in theaters</a>?
+                                            <? endif; ?>
                                           </div>
                                         </div>
                                       </div>
@@ -79,6 +83,7 @@
                                       <div class="right-bot-corner">
                                         <div class="left-bot-corner">
                                           <div class="inner">
+                                            <? if ( ! empty($scheduled)): ?>
                                           		<? $i = 1; ?>
 	                                          	<? foreach($scheduled as $notif): ?>
 		                                          	<div class="wrapper">
@@ -96,6 +101,9 @@
 			                                         	<div class="clear">&nbsp;</div>
 			                                         <? endif; ?>
 		                                         <? endforeach; ?>
+                                            <? else: ?>
+                                             <p>You have no scheduled notifications, why not check out whats <a href="/theaters">in theaters</a>?
+                                            <? endif; ?>
                                           </div>
                                         </div>
                                       </div>

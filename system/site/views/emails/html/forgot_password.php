@@ -74,7 +74,12 @@
 
                                                                 <p><a href="<?=site_url('login/forgot')?>?identity=<?=$user['username']?>&key=<?=$key?>"><?=site_url('login/forgot')?>?identity=<?=$user['username']?>&key=<?=$key?></a></p>
 
-                                                                <p>If you did not reset your password then you may disregard this email</p>
+                                                                <p>If you did not reset your password then you may disregard this email, your password will not be changed.</p>
+                                                                
+                                                                <p>
+                                                                    Best wishes,<br>
+                                                                    Movie Notificaitons
+                                                                </p>
                                                             </div>
 														</td>
                                                     </tr>

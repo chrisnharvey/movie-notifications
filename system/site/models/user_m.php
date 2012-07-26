@@ -191,7 +191,7 @@ class User_m extends CI_Model
 
 		if ($query->num_rows())
 		{
-			if ($this->meta('forgot_key', $query->row()->id) === $key OR $this->meta('forgot_expires') > time())
+			if ($this->meta('forgot_key', $query->row()->id) === $key AND $this->meta('forgot_expires') > time())
 			{
 				return TRUE;
 			}
@@ -723,23 +723,97 @@ class User_m extends CI_Model
 			return FALSE;
 		}
 	}
+
+	public function can_notify($movie_id, $type = 'theaters')
+	{
+		if($type == 'theaters')
+		{
+			$type = 'Theaters';
+		}
+		else
+		{
+			$type = 'DVD';
+		}
+
+		$country = $this->session->userdata('country');
+		$user_id = $this->session->userdata('user_id');
+
+		// Check that the user has not already received a notification for this movie
+		$this->db->join('notify', 'notifications.notify_id = notify.id')
+				 ->where('notify.type', $type)
+				 ->where('notify.movie_id', $movie_id)
+				 ->where('notifications.user_id', $user_id);
+
+		$already_notified = $this->db->count_all_results('notifications');
+		
+		if ( ! $already_notified)
+		{
+			$movie = $this->db->get_where('releases', array('movie_id' => $movie_id, 'type' => $type, 'country_id' => $country));
+
+			if(!$movie->num_rows())
+			{
+				if($type == 'DVD')
+				{
+					$theaters = $this->db->get_where('releases', array('movie_id' => $movie_id, 'type' => 'Theaters'));
+					if($theaters->num_rows())
+					{
+						if(strtotime($theaters->row()->date) < strtotime('-2 years'))
+						{
+							return FALSE;
+						}
+					}
+				}
+				else
+				{
+					$dvd = $this->db->get_where('releases', array('movie_id' => $movie_id, 'type' => 'DVD'));
+					if($dvd->num_rows())
+					{
+						return FALSE;
+					}
+				}
+				
+				return TRUE;
+			}
+
+			$date = strtotime($movie->row()->date);
+			$today = time();
+			
+			if($date < $today)
+			{
+				return FALSE;
+			}
+		}
+		else
+		{
+			return FALSE;
+		}
+		
+		return TRUE;
+	}
 	
 	// Add notification for the user
 	function add_notify($id, $type = 'theaters')
 	{
-		$id = (int)$id;
-		
-		if($type != 'theaters')
-			$type = 'dvd';
-		
-		if($type == 'dvd' AND $this->session->userdata('country') == 225)
-			return FALSE;
-		
-		$insert = $this->db->insert("notify", array('user_id' => $this->session->userdata('user_id'), 'movie_id' => $id, 'type' => $type));
-		
-		if($insert)
+		if ($this->can_notify($id, $type))
 		{
-			return TRUE;
+			$id = (int)$id;
+			
+			if($type != 'theaters')
+				$type = 'dvd';
+			
+			if($type == 'dvd' AND $this->session->userdata('country') == 225)
+				return FALSE;
+			
+			$insert = $this->db->insert("notify", array('user_id' => $this->session->userdata('user_id'), 'movie_id' => $id, 'type' => $type));
+			
+			if($insert)
+			{
+				return TRUE;
+			}
+			else
+			{
+				return FALSE;
+			}
 		}
 		else
 		{
@@ -750,18 +824,25 @@ class User_m extends CI_Model
 	// Remove notification for the user
 	function remove_notify($id, $type = 'theaters')
 	{
-		$id = (int)$id;
-		
-		if($type != 'theaters')
+		if ($this->can_notify($id, $type))
 		{
-			$type = 'dvd';
-		}
-		
-		$delete = $this->db->delete("notify", array('user_id' => $this->session->userdata('user_id'), 'movie_id' => $id, 'type' => $type));
-		
-		if($delete)
-		{
-			return TRUE;
+			$id = (int)$id;
+			
+			if($type != 'theaters')
+			{
+				$type = 'dvd';
+			}
+			
+			$delete = $this->db->delete("notify", array('user_id' => $this->session->userdata('user_id'), 'movie_id' => $id, 'type' => $type));
+			
+			if($delete)
+			{
+				return TRUE;
+			}
+			else
+			{
+				return FALSE;
+			}
 		}
 		else
 		{
@@ -824,8 +905,18 @@ class User_m extends CI_Model
 		if(!isset($send) OR !$send OR $notify_via == 'email')
 		{
 			$sent_via = 'email';
-			$subject = 'Notification for: '.$data['title'];
-			$message = $this->load->view('emails/text/notification_'.$type, $data, TRUE);
+
+			if ($type == 'Theaters')
+			{
+				$subject = $data['title'].' is released in theaters '.$data['when'];
+			}
+			else
+			{
+				$subject = $data['title'].' is released to DVD '.$data['when'];
+			}
+			
+
+			$message = $this->load->view('texts/notification_'.$type, $data, TRUE);
 			
 			$send = $this->send_email($subject, 'notification_'.$type, $data, $user_id);
 		}
@@ -940,6 +1031,6 @@ class User_m extends CI_Model
 		
 		$diff = $end - $start;
 		
-		return round($diff / 86400);
+		return round($diff / 86400) == 0 ? ceil($diff / 86400) : round($diff / 86400);
 	}
 }

@@ -101,6 +101,7 @@ class Login extends Controller {
 				$data['error'] = $error;
 			}
 
+			$this->page->title = 'Reset your password';
 			$this->page->show('login/forgot/reset', $data);
 		}
 		else
@@ -120,11 +121,8 @@ class Login extends Controller {
 					$data['message'] = TRUE;
 				}
 			}
-			else
-			{
-				
-			}
 
+			$this->page->title = 'Forgot your password?';
 			$this->page->show('login/forgot/main', $data);
 		}
 	}

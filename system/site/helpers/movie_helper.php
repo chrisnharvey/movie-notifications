@@ -11,7 +11,7 @@ function theaters_button($movie_id)
 	
 	$CI->load->model('movie_m');
 	
-	if(!$CI->movie_m->exists($movie_id) || !$CI->movie_m->can_notify($movie_id, 'theaters'))
+	if(!$CI->movie_m->exists($movie_id) || !$CI->user_m->can_notify($movie_id, 'theaters'))
 	{
 		return NULL;
 	}
@@ -39,7 +39,7 @@ function dvd_button($movie_id)
 	
 	$CI->load->model('movie_m');
 	
-	if(!$CI->movie_m->exists($movie_id) || !$CI->movie_m->can_notify($movie_id, 'dvd') || $CI->session->userdata('country') == 225 /* UK */)
+	if(!$CI->movie_m->exists($movie_id) || !$CI->user_m->can_notify($movie_id, 'dvd') || $CI->session->userdata('country') == 225 /* UK */)
 	{
 		return NULL;
 	}
