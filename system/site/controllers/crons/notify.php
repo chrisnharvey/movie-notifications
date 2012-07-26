@@ -8,8 +8,8 @@ class Notify extends Cron
 		$this->cli->write('Starting cron for timezone: '.$timezone);
 		
 		$this->load->helper('date');
-		$time = gmt_to_local(time(), $timezone, FALSE);
-		
+		$time = gmt_to_local(now(), $timezone, FALSE);
+
 		$hour = date('G', $time);
 		
 		$this->cli->write('Grabbing notifications for this hour ('.$hour.')');
@@ -53,10 +53,13 @@ class Notify extends Cron
 				$this->cli->wait(1, TRUE); // Sleep for a bit
 			}
 		}
-		
-		$next_hour = floor(($time + 3600) / 3600) * 3600;
 
-		$this->cli->write('Sleeping until next hour: '.ceil(($next_hour - $time)/60).' minutes');
+		$reverse_offset = timezones($timezone) - (timezones($timezone) * 2);
+
+		$next_hour = (floor(($time + 3600) / 3600) * 3600) + ($reverse_offset * 3600);
+
+
+		$this->cli->write('Sleeping until next hour: '.ceil(($next_hour - time())/60).' minutes');
 		
 		$this->cli->wait_until($next_hour);
 		// And away we go again...
