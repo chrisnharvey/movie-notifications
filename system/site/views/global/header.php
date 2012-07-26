@@ -11,7 +11,7 @@
 <link href="/css/jquery.pnotify.default.css" rel="stylesheet" type="text/css" />
 <link href="/css/jquery.pnotify.default.icons.css" rel="stylesheet" type="text/css" />
 
-<link href="/images/favicon.ico" rel="icon" type="image/x-icon" />
+<link href="/favicon.ico" rel="icon" type="image/x-icon" />
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script type="text/javascript" src="/js/jquery.pnotify.min.js"></script>

@@ -38,9 +38,10 @@
 |
 */
 
-if(isset($_SERVER['HTTP_HOST']))
+if (isset($_SERVER['HTTP_HOST']))
 {
-	switch ($_SERVER['HTTP_HOST']) {
+	switch ($_SERVER['HTTP_HOST'])
+	{
 	    case 'app.movienotifs.com':
 	    	$route['default_controller'] = "main/app";
 			$route['404_override'] = 'errors/error_404/app';

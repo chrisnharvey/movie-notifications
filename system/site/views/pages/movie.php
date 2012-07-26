@@ -5,7 +5,7 @@
             <img src="<?=$poster_url_large?>" width="200" align="center">
             <div class="trailer_link_container">
             	<? if(isset($youtube_id)): ?>
-           			<a href="http://www.youtube.com/embed/<?=$youtube_id?>?autoplay=1&iv_load_policy=3" id="trailer" class="trailer_link"><em><b>view trailer</b></em></a>
+           			<a href="http://www.youtube.com/embed/<?=$youtube_id?>?wmode=transparent&autoplay=1&iv_load_policy=3" id="trailer" class="trailer_link"><em><b>view trailer</b></em></a>
             	<? endif; ?>
             </div>
           </div>

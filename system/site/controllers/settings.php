@@ -169,8 +169,6 @@ class Settings extends Restricted {
 
 	public function mobile($country = NULL)
 	{
-		$country = 'uk'; // Force the country to UK
-		
 		$this->page->title = 'Mobile Settings';
 		
 		if($this->session->userdata('verified') === '0')
@@ -180,22 +178,21 @@ class Settings extends Restricted {
 		}
 		elseif($country === NULL)
 		{
-			if($this->user_m->meta('mobile_country') == 'US')
+			if ($this->user_m->meta('mobile_country') == 'US')
 			{
 				redirect(site_url('settings/mobile/us'));
 			}
-			else
+			elseif ($this->user_m->meta('mobile_country') == 'UK')
 			{
-				$country = $this->input->server('HTTP_CF_IPCOUNTRY');
-			
-				if(!$country || $country == 'XX' || $country == 'GB')
-				{
-					redirect(site_url('settings/mobile/uk'));
-				}
-				else
-				{
-					redirect(site_url('settings/mobile/us'));
-				}
+				redirect(site_url('settings/mobile/uk'));
+			}
+			elseif ( ! $country = $this->session->userdata('country') OR $country != 'GB')
+			{
+				redirect(site_url('settings/mobile/us'));
+			}
+			elseif ($country == 'GB')
+			{
+				redirect(site_url('settings/mobile/uk'));
 			}
 		}
 		elseif($country == 'uk')
@@ -291,12 +288,34 @@ class Settings extends Restricted {
 				}
 				else
 				{
-					$this->page->show('settings/mobile/us/step2');
+					// Ask for text verification code
+					$this->form_validation->set_rules('code', 'verification code', 'required|alpha_numeric|min_length[5]|max_length[8]|callback__valid_code');
+			
+					if($this->form_validation->run())
+					{
+						// Do your thing and verify the mobile
+						
+						$verify = $this->user_m->verify_mobile($this->input->post('code'));
+						
+						if($verify)
+						{
+							$this->page->show('settings/mobile/us/verified');
+						}
+						else
+						{
+							$data['error'] = "The was an error verifying your mobile";
+							$this->page->show('settings/mobile/us/step2', $data);
+						}
+					}
+					else
+					{
+						$this->page->show('settings/mobile/us/step2');
+					}
 				}
 			}
 			else
 			{
-				$this->form_validation->set_rules('mobile', 'mobile number', 'required|numeric|min_length[5]|max_length[15]');
+				$this->form_validation->set_rules('mobile', 'mobile number', 'required|numeric|is_natural|min_length[11]|max_length[11]|callback__can_send_us');
 			
 				if($this->form_validation->run())
 				{
@@ -320,6 +339,17 @@ class Settings extends Restricted {
 				}
 			}
 		}
+	}
+
+	public function _can_send_us($number)
+	{
+		if(!$this->user_m->can_send_sms($number))
+		{
+			$this->form_validation->set_message('_can_send', 'You have exceeded the maximum number of SMS messages for this hour');
+			return FALSE;
+		}
+		
+		return TRUE;
 	}
 
 	public function _can_send($number)

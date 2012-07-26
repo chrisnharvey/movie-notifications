@@ -181,7 +181,9 @@
 							  	<? $num++ ?>
 							  <? endforeach; ?>
                             </ul>
-                            <div class="alignright"><a href="/dvd"><strong>all dvds</strong></a></div>
+                            <? if($this->session->userdata('country') != 225): ?>
+                            	<div class="alignright"><a href="/dvd"><strong>all dvds</strong></a></div>
+                            <? endif; ?>
                           </div>
                           <div class="col-2">
                           	<!-- .box3 -->

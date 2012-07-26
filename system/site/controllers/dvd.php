@@ -26,6 +26,9 @@ class Dvd extends Controller {
 	
 	public function index()
 	{
+		if($this->session->userdata('country') == 225)
+			show_404();
+	
 		if($this->uri->segment(2))
 		{
 			if($this->uri->segment(2) < date("Y"))

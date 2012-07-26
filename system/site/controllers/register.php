@@ -17,7 +17,7 @@ class Register extends CI_Controller {
 		$this->load->library('form_validation');
 		$this->load->helper('form');
 		
-		$this->form_validation->set_rules('username', 'username', 'required|is_unique[users.username]|max_length[20]');
+		$this->form_validation->set_rules('username', 'username', 'required|is_unique[users.username]|max_length[20]|alpha_dash');
 		$this->form_validation->set_rules('email', 'email address', 'required|is_unique[users.email]|valid_email|max_length[256]');
 		$this->form_validation->set_rules('password', 'password', 'required|min_length[5]');
 		$this->form_validation->set_rules('confirm_password', 'confirmation password', 'required|min_length[5]|matches[password]');

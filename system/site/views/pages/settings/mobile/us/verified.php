@@ -10,7 +10,7 @@
                     <div class="left-bot-corner">
                       <div class="inner">
                         <div class="title">
-                          <h3>Mobile Settings (UK)</h3>
+                          <h3><a href="/settings/mobile/uk">Looking for the UK mobile settings?</a>Mobile Settings (US)</h3>
                         </div>
                         <!-- .box1 -->
                         <div class="box1">
@@ -25,7 +25,7 @@
                                           <div class="inner">
                                             <div class="wrapper">
 												<p>Your mobile has been verified. Your text notifications will be sent to <strong><?=$this->user_m->meta('mobile_number')?></strong>. You can change your notification settings in the Notification Settings menu.</p>
-                                            	<p><a href="/settings/mobile/uk?start_over=1">Use a different mobile</a></p>
+                                            	<p><button type="button" id="link" href="<?=site_url('settings/mobile/us')?>?cancel=1&mobile=<?=$this->user_m->meta('mobile_number')?>"><span><em><b>delete this mobile</b></em></span></button></p>
                                             </div>
                                           </div>
                                         </div>

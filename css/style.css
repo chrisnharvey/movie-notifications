@@ -28,6 +28,10 @@ object {
 ul, ol { 
 	list-style:none;
 }
+	ul.teaser {
+		list-style: inside;
+		padding-bottom: 15px;
+	}
 table, table td { 
 	padding:0;
 	border:none;

@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	// Ratings slider
+/*	// Ratings slider
 	var delay = 5000;
 	var count = 30;
 	var showing = 5;
@@ -17,7 +17,7 @@ $(document).ready(function() {
 	  setTimeout('shift()', delay);
 	}
 	
-	setTimeout('shift()', delay);
+	setTimeout('shift()', delay);*/
 
 	// Featured movies
 	$.featureList(

@@ -26,6 +26,9 @@ class Theaters extends Controller {
 	
 	public function index()
 	{
+		// First we need the country
+		$country = $this->session->userdata('country');
+		
 		if($this->uri->segment(2))
 		{
 			if($this->uri->segment(2) < date("Y"))
@@ -101,7 +104,7 @@ class Theaters extends Controller {
 		
 		
 			$this->db->order_by("date", "asc");
-			$this_month = $this->db->get_where("releases", array("YEAR(date)" => $year, "MONTH(date)" => $month), 1);
+			$this_month = $this->db->get_where("releases", array("YEAR(date)" => $year, "MONTH(date)" => $month, 'country_id' => $country), 1);
 			
 			if($this_month->num_rows() < 1)
 			{
@@ -115,7 +118,7 @@ class Theaters extends Controller {
 				$this->db->select("MONTH(date) AS month, YEAR(date) AS year");
 				$this->db->order_by("date", "desc");
 				$this->db->where("date <", $this_month);
-				$days = $this->db->get_where("releases", array("type" => "Theaters"), 1);
+				$days = $this->db->get_where("releases", array("type" => "Theaters", 'country_id' => $country), 1);
 		
 				if($days->num_rows() > 0)
 				{
@@ -139,13 +142,13 @@ class Theaters extends Controller {
 				   ';
 		
 				$this->db->order_by("date", "desc");
-				$this_month = $this->db->get_where("releases", array("YEAR(date)" => $year, "MONTH(date)" => $month), 1);
+				$this_month = $this->db->get_where("releases", array("YEAR(date)" => $year, "MONTH(date)" => $month, 'country_id' => $country), 1);
 				$this_month = $this_month->row()->date;
 		
 				$this->db->select("MONTH(date) AS month, YEAR(date) AS year");
 				$this->db->order_by("date", "asc");
 				$this->db->where("date >", $this_month);
-				$days = $this->db->get_where("releases", array("type" => "Theaters"), 1);
+				$days = $this->db->get_where("releases", array("type" => "Theaters", 'country_id' => $country), 1);
 		
 				if($days->num_rows() > 0)
 				{
@@ -185,7 +188,7 @@ class Theaters extends Controller {
 				$this->load->library('calendar', $prefs);
 		
 				$this->db->select("DISTINCT(DAY(date)) AS day");
-				$days = $this->db->get_where("releases", array("YEAR(date)" => $year, "MONTH(date)" => $month, "type" => "Theaters"));
+				$days = $this->db->get_where("releases", array("YEAR(date)" => $year, "MONTH(date)" => $month, "type" => "Theaters", 'country_id' => $country));
 	
 				$cal_data = array();
 
@@ -208,7 +211,7 @@ class Theaters extends Controller {
 
 						$this->db->order_by("date");
 						$query = $this->db->join('movies', 'releases.movie_id = movies.id', 'inner');
-						$query = $this->db->get_where("releases", array("YEAR(date)" => $year, "MONTH(date)" => $month, "DAY(date)" => $day, "type" => "Theaters"));
+						$query = $this->db->get_where("releases", array("YEAR(date)" => $year, "MONTH(date)" => $month, "DAY(date)" => $day, "type" => "Theaters", 'country_id' => $country));
 						
 						$movies = array();
             	
@@ -225,7 +228,7 @@ class Theaters extends Controller {
 				{
 						$this->db->order_by("date");
 						$this->db->join('movies', 'releases.movie_id = movies.id');
-						$query = $this->db->get_where("releases", array("YEAR(date)" => $year, "MONTH(date)" => $month, "type" => "Theaters"), 10);
+						$query = $this->db->get_where("releases", array("YEAR(date)" => $year, "MONTH(date)" => $month, "type" => "Theaters", 'country_id' => $country), 10);
 
 						$movies = array();
             	

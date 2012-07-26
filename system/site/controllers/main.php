@@ -19,11 +19,12 @@ class Main extends Controller {
 		$data['opening'] = $this->movie_m->opening(4); // Opening movies, for the middle of the page
 		$data['top_rentals'] = $this->movie_m->top_rentals(7); // Top rentals, for the bottom of the page
 		
+		$country = $this->system_m->current_country(TRUE, TRUE);
 		
-		if(!$data['in_theaters'] = $this->cache->get("mn_home_in_theaters"))
+		if(!$data['in_theaters'] = $this->cache->get("mn_home_in_theaters_".$country))
 		{
 			// Data for the slider, shows the movies that are in theaters
-			$in_theaters = $this->movie_m->in_theaters(10); // We only show 4 movies in the slider, we request 10 just in case TMDb doesn't have the images
+			$in_theaters = $this->movie_m->in_theaters(10, $country); // We only show 4 movies in the slider, we request 10 just in case TMDb doesn't have the images
 			
 			$count = 1;
 			
@@ -81,7 +82,7 @@ class Main extends Controller {
 				}
 			}
 			
-			$this->cache->save("mn_home_in_theaters", $data['in_theaters'], 86400);
+			$this->cache->save("mn_home_in_theaters_".$country, $data['in_theaters'], 86400);
 		}
 		
 		$this->page->full_title = SITE_TITLE . ' | Movie Release Notifications';

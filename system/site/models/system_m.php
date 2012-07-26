@@ -53,6 +53,31 @@ class System_m extends CI_Model
 		return TRUE;
 	}
 	
+	public function get_countries($enabled_only = TRUE)
+	{
+		$cache = 'mn_countries';
+		
+		if($enabled_only)
+			$cache .= '_eo';
+		
+		if(!$data = $this->cache->get($cache))
+		{
+			if($enabled_only)
+				$this->db->where('enabled', 1);
+			
+			$query = $this->db->get('countries');
+			
+			foreach($query->result() as $row)
+			{
+				$data[$row->short] = $row->country_id;
+			}
+			
+			$this->cache->save($cache, $data, 86400);
+		}
+		
+		return $data;
+	}
+	
 	public function countries()
 	{
 		return array(
@@ -67,5 +92,24 @@ class System_m extends CI_Model
 				'iso' => 'US'
 			)
 		);
+	}
+
+	public function current_country($iso = FALSE, $uk_for_gb = FALSE)
+	{
+		$current_id = $this->session->userdata('country');
+		if(!$iso)
+			return $current_id;
+		
+		$search = array_search($current_id, $this->get_countries());
+		
+		if($search)
+		{
+			if($search == 'GB' AND $uk_for_gb)
+				return 'UK';
+			
+			return $search;
+		}
+		
+		return FALSE;
 	}
 }

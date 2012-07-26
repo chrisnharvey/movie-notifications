@@ -8,17 +8,31 @@ class User_m extends CI_Model
 		$this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
 	}
 	
-	public function register($username, $email, $password)
+	public function register($username, $email, $password, $country = 226)
 	{
+		$this->load->library('phpass');
+		$password = $this->phpass->HashPassword($password);
 		
+		$verify_hash = md5(uniqid().$email.microtime());
+		
+		$insert = $this->db->insert('users', array(
+			'username'		=> $username,
+			'password'		=> $password,
+			'email'			=> $email,
+			'verify_hash'	=> $verify_hash,
+			'join_ip'		=> $this->input->ip_address()
+		));
+		
+		if(!$insert)
+			return FALSE;
+
+		return $this->send_verification_email($this->db->insert_id());
 	}
 	
 	public function send_verification_email($user_id = NULL)
 	{
 		if($user_id === NULL)
-		{
 			$user_id = $this->session->userdata('user_id');
-		}
 		
 		if(!$last_sent = $this->meta('verification_sent'))
 		{
@@ -36,7 +50,7 @@ class User_m extends CI_Model
 			}	
 		}
 		
-		$hash = md5(uniqid().$this->session->userdata('email'));
+		$hash = md5(uniqid().$this->session->userdata('email').microtime());
 		
 		$data['name'] = $this->session->userdata('username');
 		$data['url'] = site_url('register/verify/'.$hash);
@@ -95,6 +109,7 @@ class User_m extends CI_Model
 		$this->db->where('username', $identity)
 				 ->or_where('email', $identity);
 		$query = $this->db->get('users', 1);
+
 		if($query->num_rows())
 		{
 			$this->load->library('phpass');
@@ -128,6 +143,95 @@ class User_m extends CI_Model
 					->num_rows() >= 5)
 		{
 			return TRUE;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+
+	public function forgot_password($identity)
+	{
+		$this->db->select('id')
+				 ->where('username', $identity)
+				 ->or_where('email', $identity);
+
+		$query = $this->db->get('users');
+
+		if ($query->num_rows())
+		{
+			$key = md5(uniqid().$query->row()->id.rand().microtime());
+
+			$this->add_meta('forgot_key', $key, $query->row()->id);
+			$this->add_meta('forgot_expires', strtotime('+24 hours'), $query->row()->id);
+
+			// Send an email out.
+			if ($this->send_email('Forgot your password?', 'forgot_password', array('key' => $key), $query->row()->id))
+			{
+				return TRUE;
+			}
+			else
+			{
+				return 'There was an error whilst sending your password reset email';
+			}
+		}
+		else
+		{
+			return "The username or email you entered is not registered with Movie Notifications";
+		}
+	}
+
+	public function check_forgot_password($identity, $key)
+	{
+		$this->db->select('id')
+				 ->where('username', $identity)
+				 ->or_where('email', $identity);
+
+		$query = $this->db->get_where('users');
+
+		if ($query->num_rows())
+		{
+			if ($this->meta('forgot_key', $query->row()->id) === $key OR $this->meta('forgot_expires') > time())
+			{
+				return TRUE;
+			}
+			else
+			{
+				return 'The key specified is not valid or has expired';
+			}
+		}
+		else
+		{
+			return 'The username or email specified is not registered with Movie Notifications';
+		}
+	}
+
+	public function reset_password($identity, $key, $new_password)
+	{
+		if ($this->check_forgot_password($identity, $key))
+		{
+			$user_id = $this->id_from_identity($identity);
+			
+			$this->db->trans_start();
+			$this->add_meta('forgot_key', NULL, $user_id);
+			$this->add_meta('forgot_expires', NULL, $user_id);
+			$this->change_password($new_password, $user_id);
+			$this->db->trans_complete();
+
+			return $this->db->trans_status();
+		}
+	}
+
+	public function id_from_identity($identity)
+	{
+		$this->db->where('username', $identity)
+				 ->or_where('email', $identity);
+
+		$query = $this->db->get('users');
+
+		if ($query->num_rows())
+		{
+			return $query->row()->id;
 		}
 		else
 		{
@@ -274,20 +378,58 @@ class User_m extends CI_Model
 		if($user_id === NULL)
 		{
 			$user_id = $this->session->userdata('user_id');
+			$username = $this->session->userdata('username');
 		}
+		else
+		{
+			$username = $this->db->get_where('user', array('id' => $user_id))->row()->username;
+		}
+		
+		
+		$verification_code = generate_password(rand(5, 8)); // Generate verification code, min 5, max 8
 		
 		$this->db->trans_start();
 		$this->user_m->add_meta('mobile_number', $number);
+		$this->user_m->add_meta('mobile_verification_code', $verification_code);
 		$this->user_m->add_meta('mobile_country', 'US');
 		$this->db->trans_complete();
 		
 		if ($this->db->trans_status() !== FALSE)
 		{
-			return TRUE;
-		}
-		else
-		{
-			return FALSE;
+			// The verification code was added and the number was added, text the user with this code.
+			
+			if($this->can_send_sms($number, $user_id))
+			{
+				$this->load->library('clickatell');
+				
+				$data['code'] = $verification_code;
+				$data['name'] = $username;
+				
+				$message = $this->load->view('texts/verify_mobile', $data, TRUE);
+				
+				$send = $this->clickatell->send_message($number, $message);
+				$send = TRUE;
+				
+				if($send)
+				{
+					$this->_log_sms($number, $message, $user_id);
+					return TRUE;
+				}
+				else
+				{
+					$this->user_m->add_meta('mobile_number', NULL);
+					$this->user_m->add_meta('mobile_verification_code', NULL);
+					$this->user_m->add_meta('mobile_country', NULL);
+					return FALSE;
+				}
+			}
+			else
+			{
+				$this->user_m->add_meta('mobile_number', NULL);
+				$this->user_m->add_meta('mobile_verification_code', NULL);
+				$this->user_m->add_meta('mobile_country', NULL);
+				return FALSE;
+			}
 		}
 	}
 	
@@ -468,18 +610,6 @@ class User_m extends CI_Model
 		}
 	}
 	
-/*
-	public function regenerate($user_id = NULL)
-	{
-		if($user_id === NULL)
-		{
-			$user_id = $this->session->userdata('user_id');
-		}
-		
-		
-	}*/
-
-	
 	public function get_notifications($unread_only = FALSE, $mark_as_read = FALSE, $user_id = NULL)
 	{
 		if($user_id === NULL)
@@ -497,8 +627,8 @@ class User_m extends CI_Model
 		$this->db->join('notify', 'notifications.notify_id = notify.id', 'left');
 		$this->db->join('movies', 'notify.movie_id = movies.id', 'left');
 		
-		$this->db->order_by('timestamp', 'asc');
-		$notifs = $this->db->get_where('notifications', array('notifications.user_id' => $user_id));
+		$this->db->order_by('timestamp', 'desc');
+		$notifs = $this->db->get_where('notifications', array('notifications.user_id' => $user_id), 10);
 		
 		$return = array();
 		
@@ -523,9 +653,41 @@ class User_m extends CI_Model
 		return $return;
 	}
 
-	public function get_scheduled_notifications()
+	public function get_scheduled_notifications($user_id = NULL)
 	{
+		if($user_id === NULL)
+			$user_id = $this->session->userdata('user_id');
 		
+		$country_id = $this->session->userdata('country');
+		
+		
+		$this->db->select('notify.*, movies.id as movie_id, movies.title, releases.date');
+		$this->db->join('movies', 'notify.movie_id = movies.id', 'left');
+		$this->db->join('releases', 'releases.movie_id = movies.id', 'right');
+		
+		$this->db->where('releases.country_id', $country_id);
+		$this->db->where('releases.type = notify.type');
+		$this->db->where('releases.date > CURDATE()');
+		$this->db->where('notify.id NOT IN (SELECT notify_id FROM notifications WHERE notify_id=notify.id)', NULL, FALSE);
+		
+		$this->db->order_by('date', 'asc');
+		$notifs = $this->db->get_where('notify', array('notify.user_id' => $user_id), 10);
+
+		$return = array();
+
+		foreach($notifs->result() as $notif)
+		{
+			array_push($return, array(
+				'id' => $notif->id, 
+				'type' => $notif->type, 
+				'movie_id' => $notif->movie_id, 
+				'title' => $notif->title, 
+				'synopsis' => $this->movie_m->meta($notif->movie_id, 'synopsis'),
+				'timestamp' => strtotime($notif->timestamp)
+			));
+		}
+		
+		return $return;
 	}
 	
 	// Has the user setup a notification for the specified movie and type
@@ -540,11 +702,11 @@ class User_m extends CI_Model
 		
 		if ($this->movie_m->exists($movie_id))
 		{
-			$notify = $this->db->get_where('notify', array('movie_id' => $movie_id, 
-														   'user_id'  => $this->session->userdata('user_id'),
-														   'type'	  => $type
-														   )
-										  );
+			$notify = $this->db->get_where('notify', array(
+				'movie_id' => $movie_id, 
+				'user_id'  => $this->session->userdata('user_id'),
+				'type'	  => $type
+			));
 			
 			if($notify->num_rows())
 			{
@@ -614,7 +776,7 @@ class User_m extends CI_Model
 			$user_id = $this->session->userdata('user_id');
 		}
 		
-		$query = $this->db->select('username, email')
+		$query = $this->db->select('username, email, country')
 				 ->get_where('users', array('id' => $user_id));
 				 
 		return $query->row_array();
@@ -634,7 +796,7 @@ class User_m extends CI_Model
 		
 		$data['name'] = $user['username'];
 		$data['title'] = $this->db->get_where('movies', array('id' => $movie_id))->row()->title;
-		$data['date'] = $this->db->get_where('releases', array('movie_id' => $movie_id, 'type' => $type))->row()->date;
+		$data['date'] = $this->db->get_where('releases', array('movie_id' => $movie_id, 'type' => $type, 'country_id' => $user['country']))->row()->date;
 		$days = $this->_days(NULL, strtotime($data['date']));
 		
 		if($days == 1)
@@ -646,13 +808,7 @@ class User_m extends CI_Model
 			$data['when'] = 'in '.$days.' days';
 		}
 		
-		if($notify_via == 'email')
-		{
-			$sent_via = 'email';
-			$subject = 'Notification for: '.$data['title'];
-			$send = $this->send_email($subject, 'notification_'.$type, $data, $user_id);
-		}
-		elseif($notify_via == 'sms')
+		if($notify_via == 'sms')
 		{
 			$sent_via = 'sms';
 			$message = $this->load->view('texts/notification_'.$type, $data, TRUE);
@@ -665,10 +821,12 @@ class User_m extends CI_Model
 			$send = $this->send_iphone($message, $user_id);
 		}
 		
-		if(!isset($send) OR !$send)
+		if(!isset($send) OR !$send OR $notify_via == 'email')
 		{
 			$sent_via = 'email';
 			$subject = 'Notification for: '.$data['title'];
+			$message = $this->load->view('emails/text/notification_'.$type, $data, TRUE);
+			
 			$send = $this->send_email($subject, 'notification_'.$type, $data, $user_id);
 		}
 		
@@ -695,6 +853,8 @@ class User_m extends CI_Model
 		
 		$user = $this->data($user_id);
 		$email = $user['email'];
+
+		$data['user'] = $user;
 		
 		$this->load->library('email');
 		$this->load->config('email');
@@ -702,8 +862,8 @@ class User_m extends CI_Model
 		$this->email->from($this->config->item('from_email'), $this->config->item('from_name'));
 		$this->email->to($email);
 		$this->email->subject(sprintf($subject));
-		$this->email->message($this->load->view('emails/html/notification_'.$type, $data, TRUE));
-		$this->email->set_alt_message($this->load->view('emails/text/notification_'.$type, $data, TRUE));
+		$this->email->message($this->load->view('emails/html/'.$file, $data, TRUE));
+		$this->email->set_alt_message($this->load->view('emails/text/'.$file, $data, TRUE));
 		
 		if($this->email->send())
 		{
@@ -736,6 +896,27 @@ class User_m extends CI_Model
 			//	$send = TRUE;
 				
 				if($send)
+				{
+					$this->_log_sms($number, $message, $user_id);
+					return TRUE;
+				}
+				else
+				{
+					return FALSE;
+				}
+			}
+		}
+		elseif ($this->meta('mobile_country', $user_id) == 'US')
+		{			
+			$number = $this->meta('mobile_number', $user_id);
+			
+			if($this->can_send_sms($number, $user_id))
+			{
+				$this->load->library('clickatell');
+				$send = $this->clickatell->send_message($number, $message);
+			//	$send = TRUE;
+				
+				if ($send)
 				{
 					$this->_log_sms($number, $message, $user_id);
 					return TRUE;

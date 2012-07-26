@@ -79,8 +79,23 @@
                                       <div class="right-bot-corner">
                                         <div class="left-bot-corner">
                                           <div class="inner">
-                                          
-                                            
+                                          		<? $i = 1; ?>
+	                                          	<? foreach($scheduled as $notif): ?>
+		                                          	<div class="wrapper">
+		                                          		<div class="col-1">
+			                                              	<img src="<?=$this->movie_m->poster($notif['movie_id'])?>" alt="" class="img-indent">
+			                                                <div class="extra-wrap">
+			                                                  <h5><a href="<?=site_url('movie/'.$notif['movie_id'])?>"><?=$notif['title']?></a></h5>
+			                                                  <p><?=$notif['synopsis']?></p>
+			                                                  <div class="wrapper"><a href="<?=site_url('movie/'.$notif['movie_id'])?>" class="link1"><em><b>more</b></em></a></div>
+			                                                </div>
+			                                                <div class="clear"></div>
+			                                              </div>
+			                                         </div>
+			                                         <? if($notif != end($notifs)): ?>
+			                                         	<div class="clear">&nbsp;</div>
+			                                         <? endif; ?>
+		                                         <? endforeach; ?>
                                           </div>
                                         </div>
                                       </div>

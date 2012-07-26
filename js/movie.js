@@ -6,9 +6,9 @@ $(document).ready(function()
 		width:'560',
 		height:'315',
 		padding:'0',
-		showCloseButton: false,
+		showCloseButton: true,
 		centerOnScroll: true,
-		margin: 60,
+		margin: 100,
 		autoDimensions: false
 	});
 });

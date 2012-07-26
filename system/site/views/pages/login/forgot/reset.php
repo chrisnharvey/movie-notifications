@@ -25,25 +25,27 @@
                                           <div class="inner">
                                             	<? if(isset($message)): ?>
                                             		Thank you, your password has now been changed. you may now <?=anchor('login', 'login')?> using your new password.
-                                            	<? else: ?>
-                                            		<?=form_open(NULL, array('class' => 'login reset'))?>
+                                            	<? elseif (isset($error)): ?>
+                                                  <?=$error?>
+                                              <? else: ?>
+                                            		<?=form_open('login/forgot?identity='.$this->input->get('identity').'&key='.$this->input->get('key'), array('class' => 'login reset'))?>
          												
-         												<ul>
-         													<? if(!empty($errors)): ?>
-         														<? if($this->session->flashdata('message')): ?>
-         															<?=$this->session->flashdata('message')?>
-         														<? else: ?>
-         															<li>The username or password you entered is incorrect</li>
-         														<? endif; ?>
-         													<? endif; ?>
-         													<li><label for="new_password">New password: </label><input size="30" type="password" name="new_password" id="new_password"></li>
-         													<?=form_error('new_password')?><?=isset($errors['new_password']) ? $errors['new_password'] : ''?>
-         													<li><label for="login">Confirm new password: </label><input size="30" type="password" name="confirm_new_password" id="confirm_new_password"></li>
-         													<?=form_error('confirm_new_password')?><?=isset($errors['confirm_new_password']) ? $errors['confirm_new_password'] : ''?>
-         													<div class="button_container">
-         														<button type="submit"><span><em><b>change your passowrd</b></em></span></button>
-         													</div>
-         												</ul>                                            		
+                           												<ul>
+                           													<? if(!empty($errors)): ?>
+                           														<? if($this->session->flashdata('message')): ?>
+                           															<?=$this->session->flashdata('message')?>
+                           														<? else: ?>
+                           															<li>The username or password you entered is incorrect</li>
+                           														<? endif; ?>
+                           													<? endif; ?>
+                           													<li><label for="new_password">New password: </label><input autocomplete="off" size="30" type="password" name="new_password" id="new_password"></li>
+                           													<?=form_error('new_password')?><?=isset($errors['new_password']) ? $errors['new_password'] : ''?>
+                           													<li><label for="login">Confirm new password: </label><input autocomplete="off" size="30" type="password" name="confirm_new_password" id="confirm_new_password"></li>
+                           													<?=form_error('confirm_new_password')?><?=isset($errors['confirm_new_password']) ? $errors['confirm_new_password'] : ''?>
+                           													<div class="button_container">
+                           														<button type="submit"><span><em><b>change your passowrd</b></em></span></button>
+                           													</div>
+                           												</ul>                                            		
                                             		<?=form_close()?>
 	                                           	<? endif; ?>
                                           </div>

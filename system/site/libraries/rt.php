@@ -20,16 +20,14 @@ class Rt {
 		$this->_CI->load->config("rt");
 	}
 
-	public function call($method, $params = NULL)
+	public function call($method, $params = array())
 	{
 		$api_key = $this->_CI->config->item("rt_api_key");
 		
 		$params_string = "";
 		
 		foreach($params as $param => $value)
-		{
 			$params_string .= "&".$param."=".$value;
-		}
 		
 		// Use cURL to call API and receive response
 		$ch = curl_init();

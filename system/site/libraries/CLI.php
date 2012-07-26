@@ -313,6 +313,16 @@ class Cli {
 			}
 		}
 	}
+	
+	/**
+	 * Waits until a specified time
+	 *
+	 * @param	time
+	 */
+	public function wait_until($time)
+	{
+		time_sleep_until($time);
+	}
 
 
 	/**

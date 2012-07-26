@@ -113,8 +113,8 @@
 	background-image: url('../images/fancybox/dark/fancybox.png');
 	background-position: -40px 0px;
 	cursor: pointer;
-	z-index: 1103;
-	display: none;
+	z-index: 100;
+	display:inline;
 }
 
 #fancybox_error {

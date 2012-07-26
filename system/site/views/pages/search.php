@@ -32,7 +32,7 @@
                                             				<div class="col-2">
 			                                              	<img src="<?=$movie['poster_url']?>" alt="" class="img-indent" />
 			                                                <div class="extra-wrap">
-			                                                  <h5><?=anchor($movie['url'], $movie['title'])?> <span>(<?=$movie['year']?>)</span></h5>
+			                                                  <h5><?=anchor($movie['url'], $movie['title'])?> <? if ( ! empty($movie['year'])): ?><span>(<?=$movie['year']?>)</span><? endif; ?></h5>
 			                                                  <p><?=word_limiter($movie['synopsis'], 50)?></p>
 			                                                  <div class="wrapper"><a href="<?=$movie['url']?>" class="link1"><em><b>more</b></em></a></div>
 			                                                </div>
@@ -45,7 +45,7 @@
 	                                            			<div class="col-1">
 			                                              	<img src="<?=$movie['poster_url']?>" alt="" class="img-indent" />
 			                                                <div class="extra-wrap">
-			                                                  <h5><?=anchor($movie['url'], $movie['title'])?> <span>(<?=$movie['year']?>)</span></h5>
+			                                                  <h5><?=anchor($movie['url'], $movie['title'])?> <? if ( ! empty($movie['year'])): ?><span>(<?=$movie['year']?>)</span><? endif; ?></h5>
 			                                                  <p><?=word_limiter($movie['synopsis'], 50)?></p>
 			                                                  <div class="wrapper"><a href="<?=$movie['url']?>" class="link1"><em><b>more</b></em></a></div>
 			                                                </div>

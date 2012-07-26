@@ -56,7 +56,7 @@ class Tmdb {
 	public function search_movies($query, $page = 1, $include_adult = FALSE)
 	{
 		$params = array(
-			'query'			=> $query,
+			'query'			=> urlencode($query),
 			'page'			=> $page,
 			'include_adult'	=> $include_adult
 		);
@@ -256,8 +256,12 @@ class Tmdb {
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		
 		$response = curl_exec($ch);
+		$info = curl_getinfo($ch);
 
 		curl_close ($ch);
+
+		if ($info['http_code'] != 200)
+			return FALSE;
 		
 		$response = json_decode($response); // Decode the JSON response into an array
 		

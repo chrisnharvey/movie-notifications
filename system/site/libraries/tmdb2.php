@@ -51,7 +51,7 @@ class Tmdb2 {
 			return FALSE;
 		}
 				
-		$options_string = '/en/json/'.$api_key."/".$options; // Put together URL segments (Language, Type and API Key, Options)
+		$options_string = '/en/json/'.$api_key.$options; // Put together URL segments (Language, Type and API Key, Options)
 		
 		// Return the full URL string instead (for debugging purposes)
 		// return $this->_api_url.$method.$options_string;
@@ -71,7 +71,7 @@ class Tmdb2 {
 		
 		if(is_array($response))
 		{
-			$response = $response[0];
+		//	$response = $response[0];
 		}
 		
 		return $response; // Return the array
