@@ -16,12 +16,14 @@ body {
 	color:#7f7f7f;
 }
 
-h1 {
+h1 a {
 	background: url('../images/logo_beta.png') no-repeat top left;
 	position: absolute;
-	text-indent: -9999px;
-	width: 450px;
-	height: 70px;
+	text-indent: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	width: 390px;
+	height: 60px;
 }
 
 img {
