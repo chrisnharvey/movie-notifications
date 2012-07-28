@@ -5,6 +5,25 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 
+<? if ($this->uri->segment(1) == 'theaters'): ?>
+	<meta name="description" content="Free notifications for theatrical releases. Receive a text message, email or iOS notification when a movie you want to see is released."/>
+	<meta name="keywords" content="Theatrical Notifications, Theatrical Release Notifications, Movie Notifications, Movie Release Notifications, Film Notifications, Film Release Notifications, DVD Notifications, DVD Release Notifications"/>
+<? elseif ($this->uri->segment(1) == 'dvd'): ?>
+	<meta name="description" content="Free notifications for DVD releases. Receive a text message, email or iOS notification when a DVD you want to see is released."/>
+	<meta name="keywords" content="DVD Notifications, DVD Release Notifications, Movie Notifications, Movie Release Notifications, Film Notifications, Film Release Notifications, Theatrical Notifications, Theatrical Release Notifications"/>
+<? elseif ($this->uri->segment(1) == 'register'): ?>
+	<meta name="description" content="Register for free notifications for movie releases. Receive a text message, email or iOS notification when a movie you want to see is released."/>
+	<meta name="keywords" content="Movie Notifications, Movie Release Notifications, Film Notifications, Film Release Notifications, DVD Notifications, DVD Release Notifications, Theatrical Notifications, Theatrical Release Notifications"/>
+<? elseif ($this->uri->segment(1) == 'movie' AND isset($title) AND ! empty($title)): ?>
+	<meta name="description" content="Free notifications for <?=$title?>. Receive a text message, email or iOS notification when <?=$title?> is released."/>
+	<meta name="keywords" content="<?=$title?>, <?=$title?> Notifications, <?=$title?> DVD Notification, <?=$title?> Release Notification, <?=$title?> Theatrical Notification, Movie Release Notifications, Film Notifications, Film Release Notifications, DVD Notifications, DVD Release Notifications, Theatrical Notifications, Theatrical Release Notifications"/>
+<? else: ?>
+	<meta name="description" content="Free notifications for movie releases. Receive a text message, email or iOS notification when a movie you want to see is released."/>
+	<meta name="keywords" content="Movie Notifications, Movie Release Notifications, Film Notifications, Film Release Notifications, DVD Notifications, DVD Release Notifications, Theatrical Notifications, Theatrical Release Notifications"/>
+<? endif; ?>
+
+<meta http-equiv="cache-control" content="Public"/>
+
 <link href="/css/style.css" rel="stylesheet" type="text/css" />
 <link href="/css/layout.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.8/themes/smoothness/jquery-ui.css" type="text/css" media="all" />
