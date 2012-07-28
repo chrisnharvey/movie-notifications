@@ -11,6 +11,8 @@ class User_m extends CI_Model
 	public function register($username, $email, $password, $country = 226)
 	{
 		$this->load->library('phpass');
+
+		$plain_password = $password;
 		$password = $this->phpass->HashPassword($password);
 		
 		$verify_hash = md5(uniqid().$email.microtime());
@@ -20,19 +22,24 @@ class User_m extends CI_Model
 			'password'		=> $password,
 			'email'			=> $email,
 			'verify_hash'	=> $verify_hash,
-			'join_ip'		=> $this->input->ip_address()
+			'join_ip'		=> $this->input->ip_address(),
+			'country'		=> $this->session->userdata('country') ? $this->session->userdata('country') : 226
 		));
 		
 		if(!$insert)
 			return FALSE;
 
-		return $this->send_verification_email($this->db->insert_id());
+		$this->send_verification_email($this->db->insert_id());
+
+		return $this->login($username, $plain_password);
 	}
 	
 	public function send_verification_email($user_id = NULL)
 	{
 		if($user_id === NULL)
 			$user_id = $this->session->userdata('user_id');
+
+		$userdata = $this->data($user_id);
 		
 		if(!$last_sent = $this->meta('verification_sent'))
 		{
@@ -40,7 +47,7 @@ class User_m extends CI_Model
 		}
 		else
 		{
-			if(round(microtime(TRUE)) - round($last_sent) >= 900) // Only send the email if its been more than 15 minutes since the last one was sent
+			if(round(time()) - $last_sent >= 900) // Only send the email if its been more than 15 minutes since the last one was sent
 			{
 				$send = TRUE;
 			}
@@ -50,9 +57,9 @@ class User_m extends CI_Model
 			}	
 		}
 		
-		$hash = md5(uniqid().$this->session->userdata('email').microtime());
+		$hash = md5(uniqid().$userdata['email'].microtime());
 		
-		$data['name'] = $this->session->userdata('username');
+		$data['name'] = $userdata['username'];
 		$data['url'] = site_url('register/verify/'.$hash);
 		
 		if($send)
@@ -66,18 +73,9 @@ class User_m extends CI_Model
 		
 		if($update_db)
 		{
-			$this->load->library('email');
-			$this->load->config('email');
-			
-			$this->email->from($this->config->item('from_email'), $this->config->item('from_name'));
-			$this->email->to($this->session->userdata('email'));
-			
-			$this->email->subject('Please verify your email address');
-			$this->email->message($this->load->view('emails/verify_your_email', $data, TRUE));
-			
-			$this->email->send();
+			$this->send_email('Please verify your email', 'verify_email', $data, $user_id);
 
-			$this->add_meta('verification_sent', microtime(TRUE));
+			$this->add_meta('verification_sent', time());
 			
 			return TRUE;
 		}
