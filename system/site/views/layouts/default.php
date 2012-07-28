@@ -11,7 +11,7 @@
         <div class="indent">
         	<div class="row-1">
           	<div class="wrapper">
-            	<div class="fleft"><a href="/"><img src="/images/logo_beta.png" alt="" /></a></div>
+            	<div class="fleft"><h1><a title="movie release notifications" href="<?=site_url()?>">Movie Notifications</a></h1></div>
               <div class="fright">
               	<!-- .adv-nav -->
               	<? $this->load->view("global/right_nav"); ?>
