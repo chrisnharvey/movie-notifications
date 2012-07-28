@@ -1,3 +1,5 @@
+<h2>Your email address is not verified</h2>
+
 <p>
 	Your email address has not been verified. Don't worry, this is a simple process and 
 	shouldn't take any longer than a few minutes.
