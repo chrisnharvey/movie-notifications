@@ -139,7 +139,7 @@ class Movie extends Controller {
 			}
 			else
 			{
-				redirect(site_url("movie/".$add));
+				redirect("movie/".$add, 'location', 301);
 			}
 		}
 		else
