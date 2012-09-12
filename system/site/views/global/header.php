@@ -1,9 +1,23 @@
 <?=doctype($page['doctype'])?>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# video: http://ogp.me/ns/video#">
 <title><?=$page['title']?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
+
+<? if ($this->uri->segment(1) == 'movie' AND isset($title) AND ! empty($title)): ?>
+	<meta property="fb:app_id" content="390345654352496" /> 
+	<meta property="og:type" content="movie" /> 
+	<meta property="og:site_name" content="Movie Notifications" />
+	<meta property="og:url" content="<?=current_url()?>" /> 
+	<meta property="og:title" content="<?=$title?>" />
+	<? if ($poster_url != '/images/noposter.png'): ?>
+		<meta property="og:image" content="<?=$poster_url?>" />
+	<? endif; ?>
+	<? if ( ! empty($synopsis)): ?>
+		<meta property="og:description" content="<?=word_limiter($synipsis, 50)?>" />
+	<? endif; ?>
+<? endif; ?>
 
 <? if ($this->uri->segment(1) == 'theaters'): ?>
 	<meta name="description" content="Free notifications for theatrical releases. Receive a text message, email or iOS notification when a movie you want to see is released."/>
@@ -35,6 +49,7 @@
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script type="text/javascript" src="/js/jquery.pnotify.min.js"></script>
 <script type="text/javascript" src="/js/global.js"></script>
+<script src="//connect.facebook.net/en_US/all.js#xfbml=1&appId=390345654352496"></script>
 
 <? if(is_logged_in()): ?>
 	<script type="text/javascript" src="/js/user.js"></script>
@@ -53,4 +68,5 @@
 </head>
 
 <body id="home">
+  <div id="fb-root"></div>
   <div id="main">

@@ -21,8 +21,9 @@
                   <div class="right-bot-corner">
                     <div class="left-bot-corner">
                       <div class="inner">
-                        <div class="title">
-                          <h3><?=$title?></h3>
+                        <div class="title" style="overflow:visible">
+                          <h3 style="float:left"><?=$title?></h3>
+                          <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
                         </div>
                         <!-- .box1 -->
                         <div class="box1">
@@ -36,7 +37,6 @@
                                         <div class="left-bot-corner">
                                           <div class="inner">
                                          	   <?=theaters_button($id)?> <?=dvd_button($id)?>
-											
                            					<table class="movie_info" width="100%">
                            						<td height="10"></td>
                            						
