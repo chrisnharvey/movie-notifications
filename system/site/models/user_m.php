@@ -41,7 +41,7 @@ class User_m extends CI_Model
 
 		$userdata = $this->data($user_id);
 		
-		if(!$last_sent = $this->meta('verification_sent'))
+		if(!$last_sent = $this->meta('verification_sent', $user_id))
 		{
 			$send = TRUE;
 		}
