@@ -14,7 +14,7 @@ class Notify extends Cron
 		
 		$this->cli->write('Grabbing notifications for this hour ('.$hour.')');
 		
-		$this->db->select('notify.*, notify.id AS notify_id')
+		$this->db->select('DISTINCT notify.*, notify.id AS notify_id', FALSE)
 				 ->select('movies.*')
 				 ->select('releases.*')
 				 ->select('IFNULL((SELECT value FROM users_meta WHERE users_meta.key=\'notify_start\' AND user_id=notify.user_id), 0) AS notify_start', FALSE)
@@ -34,7 +34,7 @@ class Notify extends Cron
 		
 		$this->db->order_by('notify_order', 'asc', FALSE);
 		$notifs = $this->db->get('notify');
-
+		
 		$to_notify = array();
 		
 		foreach ($notifs->result() as $notif)
