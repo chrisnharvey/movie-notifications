@@ -22,8 +22,7 @@
                     <div class="left-bot-corner">
                       <div class="inner">
                         <div class="title" style="overflow:visible">
-                          <h3 style="float:left"><?=$title?></h3>
-                          <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div>
+                          <h3><?=$title?></h3>
                         </div>
                         <!-- .box1 -->
                         <div class="box1">
