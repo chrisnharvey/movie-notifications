@@ -48,10 +48,15 @@ function is_logged_in()
 	{
 		return TRUE;
 	}
-	else
+	elseif ($CI->input->server('PHP_AUTH_USER') AND $CI->input->server('PHP_AUTH_PW'))
 	{
-		return FALSE;
+		if ($CI->user_m->login($CI->input->server('PHP_AUTH_USER'), $CI->input->server('PHP_AUTH_PW')) === TRUE)
+		{
+			return TRUE;
+		}
 	}
+
+	return FALSE;
 }
 
 function generate_password($length = 8)
