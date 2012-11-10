@@ -29,6 +29,8 @@ class Notifications extends Restricted {
 		{
 			$notif['poster_url'] = $this->movie_m->poster($notif['movie_id'])
 		}
+
+		$this->page->json($notifs);
 	}
 	
 	public function ajax()
