@@ -23,7 +23,7 @@ class Notifications extends Restricted {
 	
 	public function app()
 	{
-		
+		$this->page->json($this->user_m->get_notifications());
 	}
 	
 	public function ajax()
