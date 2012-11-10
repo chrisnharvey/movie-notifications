@@ -3,3 +3,4 @@
 .settings
 system/site/cache/*
 system/site/logs/log-*.php
+._*
