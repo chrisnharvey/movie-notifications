@@ -23,7 +23,12 @@ class Notifications extends Restricted {
 	
 	public function app()
 	{
-		$this->page->json($this->user_m->get_notifications());
+		$notifs = $this->user_m->get_notifications();
+
+		foreach ($notifs as &$notif)
+		{
+			$notif['poster_url'] = $this->movie_m->poster($notif['movie_id'])
+		}
 	}
 	
 	public function ajax()
