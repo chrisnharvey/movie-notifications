@@ -249,7 +249,14 @@ class Dvd extends Controller {
 	
 	public function app()
 	{
-		$this->page->json($this->movie_m->new_dvds(10));
+		$movies = $this->movie_m->new_dvds(10);
+
+		foreach ($movies as &$movie)
+		{
+			$movie['poster_url'] = $this->movie_m->poster($movie['id']);
+		}
+
+		$this->page->json($movies);
 	}
 }
 
