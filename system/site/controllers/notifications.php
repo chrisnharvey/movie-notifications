@@ -27,7 +27,7 @@ class Notifications extends Restricted {
 
 		foreach ($notifs as &$notif)
 		{
-			$notif['poster_url'] = $this->movie_m->poster($notif['movie_id'])
+			$notif['poster_url'] = $this->movie_m->poster($notif['movie_id']);
 		}
 
 		$this->page->json($notifs);
