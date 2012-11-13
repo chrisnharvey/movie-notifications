@@ -1062,3 +1062,20 @@ button {
 			}
 
 /*==========================================*/
+
+.movie_title {
+	height: auto;
+	overflow: visible;
+	height: 20px;
+}
+
+.movie_title h3 {
+	width: 468px;
+	float: left;
+}
+
+.movie_title .movie_link {
+	font-weight: normal;
+	padding-top: 0;
+	float: right !important;
+}

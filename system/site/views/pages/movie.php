@@ -21,8 +21,9 @@
                   <div class="right-bot-corner">
                     <div class="left-bot-corner">
                       <div class="inner">
-                        <div class="title" style="overflow:visible">
+                        <div class="title movie_title">
                           <h3><?=$title?></h3>
+                          <?=dvd_button($id)?> <?=theaters_button($id)?>
                         </div>
                         <!-- .box1 -->
                         <div class="box1">
@@ -35,9 +36,9 @@
                                       <div class="right-bot-corner">
                                         <div class="left-bot-corner">
                                           <div class="inner">
-                                         	   <?=theaters_button($id)?> <?=dvd_button($id)?>
+                                            <fb:like send="true" width="450" show_faces="false" font="arial"></fb:like>
                            					<table class="movie_info" width="100%">
-                           						<td height="10"></td>
+                           						<td height="5"></td>
                            						
                            						<? if(!is_null($runtime)): ?>
                            						<tr>

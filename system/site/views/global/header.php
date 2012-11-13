@@ -1,5 +1,5 @@
 <?=doctype($page['doctype'])?>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" xmlns:fb="http://ogp.me/ns/fb#">
 <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# video: http://ogp.me/ns/video#">
 <title><?=$page['title']?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
