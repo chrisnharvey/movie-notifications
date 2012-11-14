@@ -5,7 +5,7 @@
         <div class="left-bot-corner">
           <div class="inner">
             <div class="title">
-              <h3>You're missing out!</h3>
+              <h3>You're missing out</h3>
             </div>
             <!-- .box1 -->
             <div class="box1">
