@@ -73,6 +73,8 @@
 
                                                                 <p><?=$title?> is released on <?=date('jS M Y', strtotime($date))?>.</p>
 
+                                                                <? if ($link): ?><p>You can buy tickets to see this movie at <?=$link?></p><? endif; ?>
+
                                                                 <p>
                                                                 	Best wishes,<br>
                                                                 	Movie Notificaitons
