@@ -87,7 +87,7 @@ class Clickatell
             $message = urlencode($message);
             $url = self::BASEURL.'/http/sendmsg?session_id='.$this->session_id
                 . '&to='.$to.'&text='.$message.'&from='.$this->from_no.'&MO=1';
-
+exit($url);
             $result = $this->_do_api_call($url);
             $result = explode(':',$result);
 
