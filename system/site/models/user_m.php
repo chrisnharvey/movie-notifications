@@ -876,6 +876,18 @@ class User_m extends CI_Model
 		$data['name'] = $user['username'];
 		$data['title'] = $this->db->get_where('movies', array('id' => $movie_id))->row()->title;
 		$data['date'] = $this->db->get_where('releases', array('movie_id' => $movie_id, 'type' => $type, 'country_id' => $user['country']))->row()->date;
+		
+		$movie = $this->movie_m->data($movie_id);
+		if (isset($movie['buy_links'][strtolower($type)]) AND $user['country'] == 226)
+		{
+			$this->load->library('yourls');
+			$data['link'] = $this->yourls->shorten($movie['buy_links'][strtolower($type)]);
+		}
+		else
+		{
+			$data['link'] = NULL;
+		}
+
 		$days = $this->_days(NULL, strtotime($data['date']));
 		
 		if($days == 1)
@@ -977,13 +989,13 @@ class User_m extends CI_Model
 		if($this->meta('mobile_country', $user_id) == 'UK')
 		{
 			$number = $this->meta('mobile_number', $user_id);
-			
+
 			if($this->can_send_sms($number, $user_id))
 			{
 				$this->load->library('textmarketer');
 				$send = $this->textmarketer->send($number, $message);
 			//	$send = TRUE;
-				
+
 				if($send)
 				{
 					$this->_log_sms($number, $message, $user_id);

@@ -723,9 +723,9 @@ class Movie_m extends CI_Model
 				if(empty($data['release_date']))
 					$data['dvd_release_date'] = NULL;
 				
-				/*
+				
 				// BUY LINKS
-				if(isset($data['imdb_id']))
+				if (isset($data['imdb_id']))
 				{
 					$this->load->library("IVA");
 					$this->load->config("affiliate");
@@ -734,11 +734,10 @@ class Movie_m extends CI_Model
 				
 					$iva_id = $this->meta($movie_id, "iva_id");
 					
-					
-					if(!$iva_id)
+					if ( ! $iva_id)
 					{
 						$iva = $this->iva->call("Video/Pinpoint", array("IdType" => "12", "SearchTerm" => $data['imdb_id']));
-						if((!isset($iva->item->Error) && isset($iva->item)))
+						if ( ! isset($iva->item->Error) && isset($iva->item))
 						{
 							$iva_id = $iva->item->PublishedId;
 							$this->add_meta($movie_id, "iva_id", $iva_id);
@@ -749,45 +748,41 @@ class Movie_m extends CI_Model
 						}
 					}
 							
-					if($iva_id)
+					if ($iva_id)
 					{
 						$iva = $this->iva->call("Common/Shopping", array("idtypes" => "13:".$this->config->item("amazon").",18:".$this->config->item("fandango"), "searchterm" => $iva_id));
 						
-						foreach($iva->item as $item)
+						foreach ($iva->item as $item)
 						{
-							if($item->IdType == 18)
+							if ($item->IdType == 18)
 							{
-								if(!isset($buy_tickets))
+								if ( ! isset($buy_tickets))
 								{
-									$name = "Buy Tickets";
-									$url = $item->PurchaseUrl->asXML();
-									$buy_tickets = TRUE;
+									$type = 'tickets';
 								}
 								else
 								{
 									continue;
 								}
 							}
-							elseif($item->IdType == 13)
+							elseif ($item->IdType == 13)
 							{
-								if($item->Binding == "DVD")
+								if ($item->Binding == "DVD")
 								{
-									if(!isset($buy_dvd))
+									if ( ! isset($buy_dvd))
 									{
-										$name = "Buy DVD";
-										$buy_dvd = TRUE;
+										$type = 'dvd';
 									}
 									else
 									{
 										continue;
 									}
 								}
-								elseif($item->Binding == "Blu-ray")
+								elseif ($item->Binding == "Blu-ray")
 								{
-									if(!isset($buy_blu_ray))
+									if ( ! isset($buy_blu_ray))
 									{
-										$name = "Buy Blu-ray";
-										$buy_blu_ray = TRUE;
+										$type = 'blu-ray';
 									}
 									else
 									{
@@ -798,6 +793,7 @@ class Movie_m extends CI_Model
 								{
 									continue;
 								}
+
 								$url = $item->PurchaseUrl->asXML();
 							}
 							else
@@ -808,11 +804,11 @@ class Movie_m extends CI_Model
 							$url = substr($url, 13);
 							$url = substr($url, 0, -14);
 
-							array_push($data['buy_links'], array('name' => $name, "url" => $url));
+							$data['buy_links'][$type] = $url;
 						}
 					}
 					
-				}*/
+				}
 				
 				if($tmdb OR $rt)
 					$this->cache->save('mn_movie_'.$id.'_'.$country, $data, 86400);

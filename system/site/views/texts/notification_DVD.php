@@ -1,1 +1,1 @@
-Hi <?=$name?>, the movie '<?=$title?>' is released to DVD <?=$when?> (<?=date('jS M Y', strtotime($date))?>).
+Hi <?=$name?>, the movie '<?=$title?>' is released to DVD <?=$when?> (<?=date('jS M Y', strtotime($date))?>).<? if ($link): ?> You can buy the DVD at <?=$link?><? endif; ?>
