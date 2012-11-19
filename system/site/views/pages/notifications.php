@@ -28,7 +28,7 @@
                                             	<? foreach($notifs as $notif): ?>
   	                                          	<div class="wrapper">
   	                                          		<div class="col-1">
-  		                                              	<img src="<?=$this->movie_m->poster($notif['movie_id'])?>" alt="" class="img-indent">
+  		                                              	<img src="<?=$this->movie_m->poster($notif['movie_id'])?>" height="136" width="92" alt="" class="img-indent">
   		                                                <div class="extra-wrap">
   		                                                  <h5><a href="<?=site_url('movie/'.$notif['movie_id'])?>"><?=$notif['title']?></a></h5>
   		                                                  <p><?=$notif['notification']?></p>
@@ -88,7 +88,7 @@
 	                                          	<? foreach($scheduled as $notif): ?>
 		                                          	<div class="wrapper">
 		                                          		<div class="col-1">
-			                                              	<img src="<?=$this->movie_m->poster($notif['movie_id'])?>" alt="" class="img-indent">
+			                                              	<img src="<?=$this->movie_m->poster($notif['movie_id'])?>" height="136" width="92" alt="" class="img-indent">
 			                                                <div class="extra-wrap">
 			                                                  <h5><a href="<?=site_url('movie/'.$notif['movie_id'])?>"><?=$notif['title']?></a></h5>
 			                                                  <p><?=$notif['synopsis']?></p>
