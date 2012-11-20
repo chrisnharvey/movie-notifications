@@ -949,7 +949,7 @@ class Movie_m extends CI_Model
 		
 		if($add)
 		{
-			$this->db->trans_start();
+			$this->db->trans_begin();
 		    $this->db->insert("movies", array("title" => $title));
 		    $movie_id = $this->db->insert_id();
 			
