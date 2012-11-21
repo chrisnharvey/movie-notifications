@@ -15,7 +15,7 @@
 		<meta property="og:image" content="<?=$poster_url?>" />
 	<? endif; ?>
 	<? if ( ! empty($synopsis)): ?>
-		<meta property="og:description" content="<?=word_limiter($synipsis, 50)?>" />
+		<meta property="og:description" content="<?=word_limiter($synopsis, 50)?>" />
 	<? endif; ?>
 <? endif; ?>
 
@@ -40,13 +40,13 @@
 
 <link href="/css/style.css" rel="stylesheet" type="text/css" />
 <link href="/css/layout.css" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.8/themes/smoothness/jquery-ui.css" type="text/css" media="all" />
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.8/themes/smoothness/jquery-ui.css" type="text/css" media="all" />
 <link href="/css/jquery.pnotify.default.css" rel="stylesheet" type="text/css" />
 <link href="/css/jquery.pnotify.default.icons.css" rel="stylesheet" type="text/css" />
 
 <link href="/favicon.ico" rel="icon" type="image/x-icon" />
 
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script type="text/javascript" src="/js/jquery.pnotify.min.js"></script>
 <script type="text/javascript" src="/js/global.js"></script>
 <script src="//connect.facebook.net/en_US/all.js#xfbml=1&appId=390345654352496"></script>
