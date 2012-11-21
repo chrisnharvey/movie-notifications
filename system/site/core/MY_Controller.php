@@ -24,13 +24,15 @@ class Controller extends CI_Controller
 		
 		if(!$this->session->userdata('logged_in'))
 		{
-			if($this->input->server('HTTP_CF_IPCOUNTRY') != 'US' || $this->input->server('HTTP_CF_IPCOUNTRY') != 'XX')
+			$this->load->library('ipinfo');
+
+			if($this->ipinfo->country() != 'US' || $this->ipinfo->country() != '-')
 			{
 				$countries = $this->system_m->get_countries();
 				
-				if(array_key_exists($this->input->server('HTTP_CF_IPCOUNTRY') ? $this->input->server('HTTP_CF_IPCOUNTRY') : 'US', $countries))
+				if (array_key_exists($this->ipinfo->country() ? $this->ipinfo->country() : 'US', $countries))
 				{
-					$this->session->set_userdata('country', $countries[$this->input->server('HTTP_CF_IPCOUNTRY') ? $this->input->server('HTTP_CF_IPCOUNTRY') : 'US']);
+					$this->session->set_userdata('country', $countries[$this->ipinfo->country() ? $this->ipinfo->country() : 'US']);
 				}
 				else
 				{
