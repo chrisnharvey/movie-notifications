@@ -20,7 +20,7 @@ class Ipinfo
 
 	public function country($ip = FALSE)
 	{
-		$ip = $ip OR $this->ci->input->ip_address();
+		$ip = $ip ?: $this->ci->input->ip_address();
 
 		if ( ! $response = $this->ci->cache->get('mn_ip_country_' . $ip))
 		{
