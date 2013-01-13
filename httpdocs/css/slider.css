@@ -1,0 +1,139 @@
+.slider {
+	padding: 10px !important;
+	z-index: 0;
+}
+
+.slider .nivoSlider {
+	position:relative;
+	background:#fff url(../img/slider/loading.gif) no-repeat 50% 50%;
+    margin-bottom:10px;
+    -webkit-box-shadow: 0px 1px 5px 0px #4a4a4a;
+    -moz-box-shadow: 0px 1px 5px 0px #4a4a4a;
+    box-shadow: 0px 1px 5px 0px #4a4a4a;
+    z-index: 0;
+    overflow: visible;
+}
+.slider .nivoSlider img {
+	position:absolute;
+	top:0px;
+	left:0px;
+	display:none;
+}
+
+.slider .nivo-controlNav {
+	text-align: center;
+	padding: 0;
+}
+.slider .nivo-controlNav a {
+	display:inline-block;
+	width:22px;
+	height:22px;
+	background:url(../img/slider/bullets.png) no-repeat;
+	text-indent:-9999px;
+	border:0;
+	margin: 0 2px;
+}
+.slider .nivo-controlNav a.active {
+	background-position:0 -22px;
+}
+
+.slider .nivo-directionNav a {
+	display:block;
+	width:30px;
+	height:30px;
+	background:url(../img/slider/arrows.png) no-repeat;
+	text-indent:-9999px;
+	border:0;
+	opacity: 0;
+	-webkit-transition: all 200ms ease-in-out;
+    -moz-transition: all 200ms ease-in-out;
+    -o-transition: all 200ms ease-in-out;
+    transition: all 200ms ease-in-out;
+}
+.slider:hover .nivo-directionNav a { opacity: 1; }
+.slider a.nivo-nextNav {
+	background-position:-30px 0;
+	right:15px;
+}
+.slider a.nivo-prevNav {
+	left:15px;
+}
+
+.slider .nivo-caption {
+    font-family: Helvetica, Arial, sans-serif;
+    top: 300px;
+    background: url('../img/slider-caption.png') no-repeat;
+    opacity: 1 !important;
+    left:-6px;
+    z-index: 999;
+}
+.slider .nivo-caption span {
+    font-size: 17px;
+    color: black;
+    font-weight: bold;
+    line-height: 1.2em;
+    padding-left: 10px;
+    padding-top: 6px;
+    display: block;
+    float: left;
+}
+.slider .nivo-caption a {
+    float: right;
+    margin-top: 4px;
+}
+
+.slider .nivo-controlNav.nivo-thumbs-enabled {
+	width: 100%;
+}
+.slider .nivo-controlNav.nivo-thumbs-enabled a {
+	width: auto;
+	height: auto;
+	float: left !important;
+	width: 166px !important;
+	text-indent: 0 !important;
+	margin-bottom: 5px;
+	border-radius: 5px;
+	text-decoration: none;
+	color: black;
+	font-weight: 0;
+
+	background: #ffffff; /* Old browsers */
+	background: -moz-linear-gradient(top,  #ffffff 44%, #f7f7f7 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(44%,#ffffff), color-stop(100%,#f7f7f7)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #ffffff 44%,#f7f7f7 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #ffffff 44%,#f7f7f7 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #ffffff 44%,#f7f7f7 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #ffffff 44%,#f7f7f7 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f7f7f7',GradientType=0 ); /* IE6-9 */
+
+}
+
+.slider .nivo-controlNav.nivo-thumbs-enabled a.active, .slider .nivo-controlNav.nivo-thumbs-enabled a:hover {
+	font-weight: normal; !important;
+	color: white;
+
+	background: #6dddf9; /* Old browsers */
+	background: -moz-linear-gradient(top,  #6dddf9 44%, #89e3fa 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(44%,#6dddf9), color-stop(100%,#89e3fa)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #6dddf9 44%,#89e3fa 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #6dddf9 44%,#89e3fa 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #6dddf9 44%,#89e3fa 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #6dddf9 44%,#89e3fa 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6dddf9', endColorstr='#89e3fa',GradientType=0 ); /* IE6-9 */
+
+}
+
+.slider .nivo-controlNav.nivo-thumbs-enabled a span {
+	display: block;
+	padding: 5px !important;
+	height: 30px !important;
+	vertical-align: top !important;
+	text-align: left !important;
+}
+
+
+.slider .nivo-controlNav.nivo-thumbs-enabled img {
+	display: block;
+	width: 166px;
+	height: auto;
+}

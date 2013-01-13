@@ -1,7 +1,9 @@
+/vendor
+/google*.html
+composer.phar
+composer.lock
 .DS_Store
 .project
 .settings
 .htaccess
-system/site/cache/*
-system/site/logs/log-*.php
 ._*

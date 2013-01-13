@@ -1,1 +1,0 @@
-Hi <?=$name?>, to verify this mobile with Movie Notifications use the following code: <?=$code?>

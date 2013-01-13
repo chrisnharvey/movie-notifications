@@ -1,1 +1,0 @@
-Hi <?=$name?>, the movie <?=$title?> opens in theaters <?=$when?> (<?=date('jS M Y', strtotime($date))?>).<? if ($link): ?> You can buy tickets at <?=$link?><? endif; ?>

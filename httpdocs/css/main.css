@@ -1,0 +1,590 @@
+/**
+* Eric Meyer's Reset CSS v2.0 (http://meyerweb.com/eric/tools/css/reset/)
+* http://cssreset.com
+*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+
+body {
+	line-height: 1;
+}
+
+ol, ul {
+	list-style: none;
+}
+
+blockquote, q {
+	quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/****************************
+** Movie Notifications CSS **
+****************************/
+
+body {
+	background: url("../img/bg.png") no-repeat scroll 50% 0 #EDEDED;
+	font-family: Arial,Helvetica,sans-serif;
+	font-size: 0.75em;
+	margin-top: 25px;
+	margin-bottom:20px;
+	color: #7F7F7F;
+	line-height: 0.9375em;
+}
+
+#main {
+	width: 980px;
+}
+
+header {
+	behavior: url(/PIE.php);
+	height: 120px;
+	background: url("../img/header-bg.png") repeat scroll 0 0 transparent;
+	border-radius: 5px;
+	padding-top: 40px;
+	padding-left: 20px;
+	padding-bottom: 10px;
+	padding-right: 20px;
+}
+
+header .right {
+	height: 85px;
+}
+
+#head_user {
+	float: right;
+}
+
+	#head_user li {
+		float: left;
+	}
+
+		#head_user li a {
+			color: #000000;
+			text-decoration: none;
+		}
+		
+		#head_user li a:hover {
+			text-decoration: underline;
+		}
+		
+		#head_user li span {
+			padding-left: 10px;
+			padding-right: 10px;
+			color: #8F8F8F;
+		}
+
+#search {
+	float: right;
+	clear: right;
+	margin-top: 25px;
+	background: url("../img/search-bg.gif") no-repeat scroll right 0 transparent;
+	width: 260px;
+	height: 28px;
+	margin-bottom: 20px;
+}
+	#search input[type="text"] {
+		border: 0;
+		width: 225px;
+		margin-left: 4px;
+		margin-top: 2px;
+		height: 20px;
+		background: transparent;
+	}
+	
+	#search input[type="submit"] {
+		border: 0;
+		width: 25px;
+		background: none;
+		cursor: pointer;
+		height: 25px;
+	}
+
+nav#head_nav {
+	behavior: url(/PIE.php);
+	height: 30px;
+	border-radius: 5px;
+	background: url("../img/nav-bg.gif") repeat-x scroll 0 0 transparent;
+	float: left;
+	width: 100%;
+}
+
+	nav#head_nav ul {
+		margin-top: 3px;
+		margin-bottom: 9px;
+	}
+
+	nav#head_nav ul li a {
+		behavior: url(/PIE.php);
+		height: 15px;
+		float:left;
+		margin-left: 3px;
+		padding-top: 6px;
+		padding-bottom: 2px;
+		padding-left: 10px;
+		padding-right: 10px;
+		border-radius: 3px;
+		text-decoration: none;
+		color: white;
+	}
+	
+	nav#head_nav ul li a:hover, nav#head_nav ul li a.current {
+		background-color: #fafafa;
+		color: black;
+	}
+
+h1 a.logo {
+	background: url("../img/logo_beta.png") no-repeat scroll left top transparent;
+	height: 60px;
+	overflow: hidden;
+	position: absolute;
+	text-indent: 100%;
+	white-space: nowrap;
+	width: 390px;
+}
+
+.content {
+	behavior: url(/PIE.php);
+	background: none repeat scroll 0 0 #FFFFFF;
+	border-radius: 5px 5px 0 0;
+	float: left;
+	margin-top: 20px;
+	padding: 10px;
+}
+
+footer {
+	behavior: url(/PIE.php);
+	border-radius: 0 0 5px 5px;
+	background-color: #383838;
+	float: left;
+	height: 85px;
+	color: #FFFFFF;
+	padding-top: 20px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+nav#foot_nav ul li {
+	float: left;
+	margin-right: 20px;
+}
+	nav#foot_nav ul li a {
+		color: #D7D7D7;
+		text-decoration: none;
+	}
+	nav#foot_nav ul li a:hover {
+		text-decoration: underline;
+	}
+
+nav#foot_user {
+	clear: left;
+	margin-top: 23px;
+}
+
+	nav#foot_user ul li {
+		float: left;
+	}
+		nav#foot_user ul li a {
+			color: #888888;
+			text-decoration: none;
+		}
+		nav#foot_user ul li a:hover {
+			text-decoration: underline;
+		}
+		nav#foot_user ul li span {
+			color: #888888;
+			margin-left: 8px;
+			margin-right: 8px;
+		}
+
+#copyright {
+	clear: left;
+	padding-top: 11px;
+}
+
+#social {
+	float: right;
+	position: relative;
+}
+
+.twitter {
+	overflow: hidden;
+	text-indent: -9999px;
+	position: absolute;
+	background: url('../img/social.png') no-repeat scroll left top transparent;
+	width: 24px;
+	height: 23px;
+	white-space: nowrap;
+	right: 30px;
+	outline: medium none;
+}
+	.twitter:hover {
+		background-position: left bottom;
+	}
+
+.facebook {
+	overflow: hidden;
+	text-indent: -9999px;
+	position: absolute;
+	background: url('../img/social.png') no-repeat scroll right top transparent;
+	width: 24px;
+	height: 23px;
+	white-space: nowrap;
+	right: 0;
+	outline: medium none;
+}
+	.facebook:hover {
+		background-position: right bottom;
+	}
+
+#data {
+	clear: right;
+	float: right;
+	margin-top: 45px;
+}
+
+#data a {
+	text-decoration: none;
+}
+
+#data a:hover {
+	text-decoration: underline;
+}
+
+/**********
+** Aside **
+**********/
+aside {
+
+}
+
+aside h2 {
+	border-bottom: 2px solid #393939;
+	color: #393939;
+	font-size: 21px;
+	line-height: 1.2em;
+	padding: 13px 0 22px;
+	font-weight: bold;
+}
+
+aside ol li {
+	/*display: block;*/
+	list-style: decimal inside;
+	border-bottom: 1px solid #D9D9D9;
+	border-left: 1px solid #EEEEEE;
+	border-right: 1px solid #EEEEEE;
+	background: none repeat scroll 0 0 #EEEEEE;
+	padding: 10px 0 9px 11px;
+	color: #A1A1A1;
+	font-size: 14px;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+aside ol li a {
+	color: #3A3A3A;
+	font-size: 12px;
+	text-decoration: none;
+	margin-left: -2px;
+}
+
+/************
+** Darn IE **
+************/
+.ie ol li a {
+	margin-left: -6px;
+}
+
+aside ol li:hover {
+	background: url("../img/list-arrow.gif") no-repeat scroll 0 50% #FFFFFF;
+}
+
+aside ol li:hover a {
+	color: #16CBF8;
+}
+
+/************
+** Buttons **
+*************/
+.btn {
+	behavior: url(/PIE.php);
+	background: url("../img/btn-sprite.png") no-repeat scroll right top #f4f4f4;
+    border: 1px solid #C6C6C6;
+    border-radius: 2px 2px 2px 2px;
+    padding: 6px 28px 4px 8px;
+    text-align: left;
+    color: #4C4E4E;
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: lowercase;
+    height: 14px;
+    float: left;
+}
+
+.btn:hover {
+	background: url("../img/btn-sprite.png") no-repeat scroll right bottom #f4f4f4;
+	color: #000000;
+}
+
+/**********
+** Boxes **
+**********/
+.box {
+	behavior: url(/PIE.php);
+	border-radius: 5px 5px 0 0;
+	background-image: linear-gradient(bottom, rgb(255,255,255) 10%, rgb(237,238,238) 50%);
+	background-image: -o-linear-gradient(bottom, rgb(255,255,255) 10%, rgb(237,238,238) 50%);
+	background-image: -moz-linear-gradient(bottom, rgb(255,255,255) 10%, rgb(237,238,238) 50%);
+	background-image: -webkit-linear-gradient(bottom, rgb(255,255,255) 10%, rgb(237,238,238) 50%);
+	background-image: -ms-linear-gradient(bottom, rgb(255,255,255) 10%, rgb(237,238,238) 50%);
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0.10, rgb(255,255,255)),
+		color-stop(0.50, rgb(237,238,238))
+	);
+	-pie-background: linear-gradient(bottom, rgb(255,255,255) 10%, rgb(237,238,238) 50%);
+
+	height: auto;
+
+	margin-top: 20px;
+}
+
+.box:first-of-type {
+	margin-top: 0;
+}
+
+.box h3 {
+	color: #4E4D4D;
+	font-size: 21px;
+	font-size: normal;
+	line-height: 1.2em;
+	padding: 15px;
+}
+
+.box .title {
+	padding: 15px;
+	margin-bottom: 20px;
+}
+
+.box .title h3 {
+	padding: 0;
+	float: left;
+}
+
+.box .title a {
+	float: right;
+	font-weight: bold;
+	text-decoration: underline;
+	padding-top: 5px;
+}
+
+.box .title a:hover {
+	text-decoration: none;
+}
+
+.box section, .inner_box {
+	behavior: url(/PIE.php);
+	border: 1px solid #EEEEEE;
+	background-color: white;
+	border-radius: 5px;
+	margin: 15px;
+	padding: 10px;
+	overflow: hidden;
+}
+
+.box ul.movies li {
+	float: left;
+	width: 45%;
+	min-height: 120px;
+	display: block;
+	overflow: hidden;
+}
+
+.box ul.movies li:nth-child(odd) {
+	clear: left;
+}
+
+.box ul.movies li:nth-child(even) {
+	margin-left: 20px;
+	margin-bottom: 30px;
+}
+
+.box ul.movies li:nth-child(even):last-child {
+	margin-bottom: 0;
+}
+
+.box ul.movies li div {
+	float: right;
+	width: 200px;
+}
+
+.box ul.movies li div h4 {
+	font-size: 16px;
+	line-height: 1.2em;
+	margin-bottom: 12px;
+}
+
+.box ul.movies li div h4 a {
+	text-decoration: none;
+}
+
+.box ul.movies li div h4 a:hover {
+	text-decoration: underline;
+}
+
+.box ul.movies li div img {
+	float: left;
+	margin-right: 10px;
+}
+
+.box ul.movies li div p {
+	line-height: 14px;
+}
+
+.box ul.movies li:nth-child(even):not(:last-child):after {
+	border-top: 1px solid #E6E6E6;
+	display: block;
+	height: 1px;
+	content: " ";
+	width: 669px;
+	position: absolute;
+	margin-left:-322px;
+	margin-top: 35px;
+}
+
+.double_list {
+	behavior: url(/PIE.php);
+	border-radius: 5px 5px 0 0;
+	background: rgb(237,238,238);
+}
+
+.double_list .left {
+	padding: 16px 0 16px 14px;
+	width: 320px;
+}
+
+.double_list ol {
+	list-style: inside decimal-leading-zero;
+}
+
+.double_list .left ol li {
+	background: url('../img/num-bg.gif') no-repeat left;
+	border-bottom: 1px dashed #7F7F7F;
+	padding: 15px 15px 15px 5px;
+}
+
+.double_list .left ol li a {
+	margin-left: 10px;
+	text-decoration: none;
+	color: #4C4E4E;
+	font-weight: bold;
+}
+
+.double_list .left ol li a:hover {
+	text-decoration: underline;
+	color: #16CBF8;
+}
+
+.double_list .left h3 {
+	border-bottom: 1px solid #B2B3B3;
+	margin-bottom: 10px;
+	padding-bottom: 6px;
+}
+
+.double_list .right {
+	padding: 16px 15px 16px 0;
+	width: 330px;
+	font-size: 14px;
+	color: #A1A1A1;
+}
+
+.double_list .right .inner_box ol li {
+	border-bottom: 1px solid #E5E5E5;
+	padding: 0 0 7px;
+	margin-bottom: 7px;
+}
+
+.double_list .right .inner_box h3 {
+	border-bottom: 1px solid #B2B3B3;
+	padding-bottom: 5px;
+	margin-bottom: 20px
+}
+
+.inner_box {
+	margin: 0;
+	padding-left: 15px;
+}
+
+/************
+** General **
+************/
+p {
+	margin-bottom: 10px;
+}
+
+h3 {
+	color: #4E4D4D;
+	font-size: 21px;
+	font-weight: normal;
+	line-height: 1.2em;
+}
+
+/**********
+** Links **
+**********/
+a {
+	text-decoration: underline;
+	color: #16CBF8;
+	outline: medium none;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+/***********
+** Floats **
+***********/
+.right {
+	float:right;
+}
+
+.left {
+	float:left;
+}
