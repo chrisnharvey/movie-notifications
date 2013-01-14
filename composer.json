@@ -2,8 +2,9 @@
 	"require": {
 		"laravel/framework": "4.0.*",
 		"facebook/php-sdk": "3.2.*",
-		"guzzle/guzzle": "*",
-		"mockery/mockery": "*"
+		"guzzle/guzzle": "3.1.*",
+		"gregwar/image": "1.0.*",
+		"mockery/mockery": "0.7.*"
 	},
 	"autoload": {
 		"classmap": [
