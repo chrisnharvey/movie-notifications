@@ -1,7 +1,8 @@
 <?php
 
 // Bind our injectable classes into the IoC container
-App::bind('MovieData\MovieData', 'MovieData\TmdbRt');
+App::bind('Movie', 'TrMovie');
+App::bind('Image', 'TrImage');
 
 Route::get('/', 'HomeController@index');
 
