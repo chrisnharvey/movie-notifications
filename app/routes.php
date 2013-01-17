@@ -13,4 +13,13 @@ Route::get('login', ['before' => 'guest', 'as' => 'login', function()
 
 Route::get('movie/{movie}', ['as' => 'movie', 'uses' => 'HomeController@index']);
 
-Route::get('images/{id}/{width?}/{height?}/{mode?}', ['as' => 'image', 'uses' => 'ImagesController@deliver']);
+Route::get('images/{id}-{width}x{height}-{mode}.png', ['as' => 'image', 'uses' => 'ImagesController@deliver']);
+
+Route::group(array('domain' => 'api.movienotifications.com'), function()
+{
+	// Resourceful controller shit for the API!
+    Route::get('user/{id}', function($account, $id)
+    {
+        //
+    });
+});
