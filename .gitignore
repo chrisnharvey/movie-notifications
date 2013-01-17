@@ -1,5 +1,5 @@
 /vendor
-/google*.html
+google*.html
 composer.phar
 composer.lock
 .DS_Store
