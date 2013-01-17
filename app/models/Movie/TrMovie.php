@@ -1,28 +1,19 @@
-<?php namespace MovieData;
+<?php
 
-use RT;
-use User;
-use Cache;
-use DB;
-
-class TmdbRt implements MovieData
+class TrMovie implements Movie
 {
-	public function __construct()
+	public function __construct(Image $image)
 	{
-		$this->rt   = new \RT;
-		$this->tmdb = new \TMDb;
+		$this->image = $image;
+		$this->rt    = new RT;
+		$this->tmdb  = new TMDb;
 	}
 
 	public function boxOffice($limit = 10, $country = false)
 	{
 		$country = $country ?: static::country();
-		$rank    = 0;
 
-		$data = $this->call("lists/movies/box_office", array('limit' => $limit, 'country' => $country));
-
-		foreach ($data as &$movie) $movie['rank'] = $rank++;
-		
-		return $data;
+		return $this->call("lists/movies/box_office", array('limit' => $limit, 'country' => $country));
 	}
 
 	public function newDvds($limit = 10, $country = false)

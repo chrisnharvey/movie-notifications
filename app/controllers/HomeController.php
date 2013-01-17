@@ -1,11 +1,9 @@
 <?php
 
-use MovieData\MovieData;
-
 class HomeController extends BaseController
 {
 
-	public function __construct(MovieData $movie)
+	public function __construct(Movie $movie)
 	{
 		$this->movie = $movie;
 	}

@@ -1,7 +1,9 @@
-<?php namespace MovieData;
+<?php
 
-interface MovieData
+interface Movie
 {
+	public function __construct(Image $image);
+
 	public function boxOffice($limit = 10, $country);
 
 	public function newDvds($limit = 10, $country);
