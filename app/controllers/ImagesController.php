@@ -2,13 +2,13 @@
 
 class ImagesController extends BaseController
 {
-	public function __construct(MovieData $movie)
+	public function __construct(Image $images)
 	{
-		$this->movie = $movie;
+		$this->images = $images;
 	}
 	
-	public function deliver($id, $width = 100, $height = 100, $mode = null)
+	public function deliver($id, $width, $height, $mode)
 	{
-
+		return $this->images->deliver($id, $width, $height, $mode);
 	}
 }
