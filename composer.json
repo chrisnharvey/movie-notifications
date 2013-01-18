@@ -4,7 +4,8 @@
 		"facebook/php-sdk": "3.2.*",
 		"guzzle/guzzle": "3.1.*",
 		"gregwar/image": "1.0.*",
-		"mockery/mockery": "0.7.*"
+		"mockery/mockery": "0.7.*",
+		"cboden/ratchet": "0.2.*"
 	},
 	"autoload": {
 		"classmap": [
