@@ -11,37 +11,27 @@ class TrMovie implements Movie
 
 	public function boxOffice($limit = 10, $country = false)
 	{
-		$country = $country ?: static::country();
-
-		return $this->call("lists/movies/box_office", array('limit' => $limit, 'country' => $country));
+		return $this->call("lists/movies/box_office", array('limit' => $limit, 'country' => $country ?: static::country()));
 	}
 
 	public function newDvds($limit = 10, $country = false)
 	{
-		$country = $country ?: static::country();
-
-		return $this->call('lists/dvds/new_releases', ['page_limit' => $limit, 'country' => $country]);
+		return $this->call('lists/dvds/new_releases', ['page_limit' => $limit, 'country' => $country ?: static::country()]);
 	}
 
 	public function opening($limit = 10, $country = false)
 	{
-		$country = $country ?: static::country();
-
-		return $this->call('lists/movies/opening', ['limit' => $limit, 'country' => $country]);
+		return $this->call('lists/movies/opening', ['limit' => $limit, 'country' => $country ?: static::country()]);
 	}
 
 	public function inTheaters($limit = 10, $country = false)
 	{
-		$country = $country ?: static::country();
-
-		return $this->call('lists/movies/in_theaters', ['limit' => $limit, 'country' => $country]);
+		return $this->call('lists/movies/in_theaters', ['limit' => $limit, 'country' => $country ?: static::country()]);
 	}
 
 	public function topRentals($limit = 10, $country = false)
 	{
-		$country = $country ?: static::country();
-
-		return $this->call('lists/dvds/top_rentals', ['limit' => $limit, 'country' => $country]);
+		return $this->call('lists/dvds/top_rentals', ['limit' => $limit, 'country' => $country ?: static::country()]);
 	}
 
 	public function poster($movieId, $width = 81, $height = 120)
@@ -91,7 +81,7 @@ class TrMovie implements Movie
 						'id'     => isset($movie['alternate_ids']['imdb']) ? "tt{$movie['alternate_ids']['imdb']}" : "rt{$movie['id']}",
 						'title'  => $movie['title'],
 						'url'    => static::url($movie),
-						'poster' => $movie['posters']['profile']
+						'poster' => Image::url($movie['posters']['profile']
 					];
 				}
 			}
