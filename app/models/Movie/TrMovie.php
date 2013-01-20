@@ -81,7 +81,7 @@ class TrMovie implements Movie
 						'id'     => isset($movie['alternate_ids']['imdb']) ? "tt{$movie['alternate_ids']['imdb']}" : "rt{$movie['id']}",
 						'title'  => $movie['title'],
 						'url'    => static::url($movie),
-						'poster' => Image::url($movie['posters']['profile']
+						'poster' => Image::url($movie['posters']['profile'])
 					];
 				}
 			}
