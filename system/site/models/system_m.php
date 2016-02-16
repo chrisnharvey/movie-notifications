@@ -5,7 +5,7 @@ class System_m extends CI_Model
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
+		$this->load->driver('cache', array('adapter' => 'file', 'backup' => 'file'));
 	}
 	
 	public function meta($meta_key)

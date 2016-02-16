@@ -5,7 +5,7 @@ class Movie_m extends CI_Model
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file')); // We use a lot of cacheing, lets load the cacheing driver
+		$this->load->driver('cache', array('adapter' => 'file', 'backup' => 'file')); // We use a lot of cacheing, lets load the cacheing driver
 	}
 	
 	// Use Rotten Tomatoes to get the latest box office statistics
