@@ -147,6 +147,19 @@ class Movie extends Controller {
 			show_404();
 		}
 	}
+
+	public function app()
+	{
+		$id = $this->input->get('id');
+		
+		if ( ! $id) {
+			$id = $this->movie_m->add($this->input->get('alt_id'));
+		}
+
+		$data = $this->movie_m->data($id);
+
+                $this->page->json($data);
+	}
 	
 	public function tickets($id)
 	{
