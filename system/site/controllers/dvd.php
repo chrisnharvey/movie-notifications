@@ -249,7 +249,17 @@ class Dvd extends Controller {
 	
 	public function app()
 	{
-		$movies = $this->movie_m->new_dvds(10);
+		switch ($this->input->get('type')) {
+			case 'rentals':
+				$movies = $this->movie_m->top_rentals(10);
+			break;
+
+			default:
+			case 'new':
+				$movies = $this->movie_m->new_dvds(10);
+			break;
+		}
+//		$movies = $this->movie_m->new_dvds(10);
 
 		foreach ($movies as &$movie)
 		{
