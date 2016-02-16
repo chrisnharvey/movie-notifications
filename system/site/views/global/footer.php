@@ -23,7 +23,7 @@
               <? endif; ?>
             </ul>
             <!-- /.users-links -->
-            &copy; Movie Notifications 2012&nbsp;<!-- &nbsp; <a href="/privacy">Privacy Policy</a>-->
+            &copy; Movie Notifications <?=date('Y')?>&nbsp;<!-- &nbsp; <a href="/privacy">Privacy Policy</a>-->
           </div>
           <!-- .social-services -->
           <ul class="social-services">
