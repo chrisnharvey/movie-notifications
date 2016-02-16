@@ -31,7 +31,7 @@
             <li><a href="http://www.facebook.com/MovieNotifications"><img src="/images/icon-facebook.jpg" alt="" /></a></li>
           </ul><br><br>
           <!-- /.social-services -->
-          <div class="data-by">Movie data provided by <a href="http://themoviedb.org">TMDb</a>, <a href="http://rottentomatoes.com/">RT</a> &amp; <a href="http://filmdates.co.uk">FilmDates.co.uk</a></div>
+          <div class="data-by">Movie data provided by <a href="http://themoviedb.org">TMDb</a>, <a href="http://rottentomatoes.com/">RT</a> &amp; <a href="http://filmdates.co.uk">FilmDates</a></div>
         </div>
       </div>
     </div>
