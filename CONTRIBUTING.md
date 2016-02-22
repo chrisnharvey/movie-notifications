@@ -30,17 +30,6 @@ Major new features should always be sent to the master branch, which contains th
 
 If you discover a security vulnerability within Movie Notifications, please send an e-mail to Chris Harvey at chris@chrisnharvey.com. All security vulnerabilities will be promptly addressed.
 
-
 ## Coding Style
 
-Movie Notifications follows the PSR-2 coding standard and the PSR-4 autoloading standard.
-
-### Code Style Fixer
-
-You may use the PHP-CS-Fixer to fix your code style before committing.
-
-To get started, install the tool globally and check the code style by issuing the following terminal command from your project's root directory:
-
-```
-php-cs-fixer fix
-```
+Movie Notifications follows the CodeIgniter [PHP Style guide](http://www.codeigniter.com/user_guide/general/styleguide.html).
