@@ -23,7 +23,7 @@
               <? endif; ?>
             </ul>
             <!-- /.users-links -->
-            &copy; Movie Notifications <?=date('Y')?>&nbsp;<!-- &nbsp; <a href="/privacy">Privacy Policy</a>-->
+            &copy; <?=date('Y')?> <a href="https://chrisnharvey.com">Chris Harvey</a>&nbsp;<!-- &nbsp; <a href="/privacy">Privacy Policy</a>-->
           </div>
           <!-- .social-services -->
           <ul class="social-services">
