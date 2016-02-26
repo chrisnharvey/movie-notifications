@@ -27,8 +27,8 @@
           </div>
           <!-- .social-services -->
           <ul class="social-services">
-          	<li><a href="http://twitter.com/movienotifs"><img src="/images/icon-twitter.jpg" alt="" /></a></li>
-            <li><a href="http://www.facebook.com/MovieNotifications"><img src="/images/icon-facebook.jpg" alt="" /></a></li>
+          	<li><a href="https://twitter.com/movienotifs"><img src="/images/icon-twitter.jpg" alt="" /></a></li>
+            <li><a href="https://www.facebook.com/MovieNotifications"><img src="/images/icon-facebook.jpg" alt="" /></a></li>
           </ul><br><br>
           <!-- /.social-services -->
           <div class="data-by">Movie data provided by <a href="http://themoviedb.org">TMDb</a>, <a href="http://rottentomatoes.com/">RT</a> &amp; <a href="http://filmdates.co.uk">FilmDates</a></div>
