@@ -17,7 +17,7 @@ body {
 }
 
 h1 a {
-	background: url('../images/logo_beta.png') no-repeat top left;
+	background: url('../images/logo.png') no-repeat top left;
 	position: absolute;
 	text-indent: 100%;
 	white-space: nowrap;
