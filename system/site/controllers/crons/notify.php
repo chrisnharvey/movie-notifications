@@ -61,9 +61,9 @@ class Notify extends Cron
 
 		$this->cli->write('Sleeping until next hour: '.ceil(($next_hour - time())/60).' minutes');
 		
-		$this->cli->wait_until($next_hour);
+		//$this->cli->wait_until($next_hour);
 		// And away we go again...
-		$this->run($timezone);
+		//$this->run($timezone);
 	}
 	
 	private function _days($start = NULL, $end)
